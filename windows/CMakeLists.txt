@@ -1,10 +1,10 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
-project(social_news_and_community_forum LANGUAGES CXX)
+project(social_and_recommendation_system LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
-set(BINARY_NAME "social_news_and_community_forum")
+set(BINARY_NAME "social_and_recommendation_system")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

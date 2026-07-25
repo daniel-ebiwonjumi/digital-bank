@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="social_news_and_community_forum"
+        android:label="social_and_recommendation_system"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'authScreens/loginScreen.dart';
+import 'ui/auth/widgets/login_screen.dart';
+
 
 void main(){
   debugPaintSizeEnabled = true;
