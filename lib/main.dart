@@ -1,24 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'ui/auth/widgets/login_screen.dart';
-
+import 'package:google_fonts/google_fonts.dart';
+import 'package:social_and_recommendation_system/ui/auth/login_screen.dart';
 
 void main(){
-  debugPaintSizeEnabled = true;
-  runApp(const MyApp());
+  runApp(const FullApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class FullApp extends StatelessWidget{
+  const FullApp({super.key});
 
- static const appTitle = 'Social and Recommendation System';
- 
   @override
   Widget build(BuildContext context){
-    return const MaterialApp(
-      title: appTitle,
-      debugShowCheckedModeBanner: false,
+    return  MaterialApp(
+      title: 'Full App',
       home: LoginScreen(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark),
+        textTheme: TextTheme(
+          displayLarge: TextStyle(
+            fontSize: 72,
+            fontWeight: FontWeight.bold,
+          ),
+          titleLarge: GoogleFonts.oswald(
+            fontSize: 30,
+            fontStyle: FontStyle.italic
+          ),
+          bodyMedium: GoogleFonts.merriweather(),
+          displaySmall: GoogleFonts.pacifico(),
+        )
+      ),
     );
   }
 }

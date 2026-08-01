@@ -41,6 +41,7 @@ dependencies:
   flutter_riverpod: ^3.4.1
   google_fonts: ^8.2.0
   dio: ^5.11.0
+  signals: ^7.1.0
 
 
 dev_dependencies:
