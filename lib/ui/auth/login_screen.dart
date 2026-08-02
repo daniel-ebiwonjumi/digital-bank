@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_and_recommendation_system/ui/homepage/homepage.dart';
 import 'auth_widgets.dart';
 import 'login_view_model.dart';
 import 'signup_screen.dart';
@@ -22,14 +23,14 @@ Widget build(BuildContext context){
             AppLogo(),
             CustomTextField(hintText: 'Phone number or Email address', prefixIcon: Icons.email_outlined, controller: _emailController),
             CustomTextField(hintText: 'Password', prefixIcon: Icons.lock_outline, controller: _passswordController),
-            Container(
-              child: Center(child:
+            Center(child: ElevatedButton(onPressed: (){  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Homepage() ));}, child: Text('Log in'), ),),
+             Center(child:
               TextButton(child: Text('If you don\'t have an account: Signup',
             ),
               onPressed:() {
                 Navigator.of(context).push(MaterialPageRoute<void>(builder: (context) => const SignupScreen() ));
               }))
-            )
+            
                      
           ]
         )
