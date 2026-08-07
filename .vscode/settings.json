@@ -1,0 +1,9 @@
+{
+    "dart.analysisIncludedFolders": [
+        "lib",
+         "C:\\src\\flutter\\packages\\flutter\\lib"
+    ],
+    "files.readonlyInclude": {
+         "C:\\src\\flutter\\packages\\flutter\\lib\\**\\**: true"
+    }
+}

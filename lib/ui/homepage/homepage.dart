@@ -90,15 +90,22 @@ class Posts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
-       Row(children: [
-        Icon(Icons.person),
-        SizedBox(width: 8,),
-        Text('First name Second name')
-       ],),
-        Icon(Icons.more_horiz)
+        const Row(
+           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+           Row(children: [
+            Icon(Icons.person),
+            SizedBox(width: 8,),
+            Text('First name Second name')
+           ],),
+            Icon(Icons.more_horiz)
+          ],
+        ),
+        SizedBox(width: double.infinity, 
+        child: Container(color: Colors.blue ,)
+        )
       ],
     );
   }
