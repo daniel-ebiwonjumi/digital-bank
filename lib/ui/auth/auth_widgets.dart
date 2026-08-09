@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_and_recommendation_system/ui/core/themes/theme_extensions.dart';
 
 class AppLogo extends StatelessWidget{
   const AppLogo({super.key});
@@ -10,7 +11,7 @@ return Padding(
   child: Center(child: Icon(
     Icons.flutter_dash, //TODO: use image.asset to add my own customized logo here later
   size: 80,
-  color: Theme.of(context).colorScheme.primary
+  color: context.colorScheme.primary
   ),)
 );
   }
@@ -28,6 +29,7 @@ final String? Function(String?)? validator;
 @override
 Widget build(BuildContext context){
   return TextField(
+    
     decoration: InputDecoration(
       hintText: hintText,
       prefixIcon: Icon(prefixIcon),

@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:social_and_recommendation_system/data/repositories/auth_repository_impl.dart';
 import 'package:social_and_recommendation_system/ui/homepage/homepage.dart';
 import 'auth_widgets.dart';
 import 'login_view_model.dart';
 import 'signup_screen.dart';
+import 'package:social_and_recommendation_system/data/services/mock_auth_repository.dart';
+
+
+//TODO: Remove the global reference later, there is a better way to do it
+final AuthRepository authRepository = MockAuthRepository();
 
 class LoginScreen extends StatefulWidget{
   const LoginScreen({super.key});
@@ -13,6 +19,27 @@ class LoginScreen extends StatefulWidget{
 class _LoginScreenState extends State<LoginScreen> {
 final _emailController = TextEditingController();
 final _passswordController = TextEditingController();
+
+bool _isLoading = false;
+
+void _handleLogin()async{
+  if (_emailController.text.isEmpty || _passswordController.text.isEmpty) return;
+
+setState(() {
+  _isLoading = true;
+});
+
+var user = await authRepository.login(_emailController.text, _passswordController.text);
+
+setState(()=> _isLoading = false);
+
+if(user != null) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Welcome back, ${user.name}')));
+} else {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid mock credentials')));
+}
+
+}
 @override
 Widget build(BuildContext context){ 
  return Scaffold(
@@ -23,7 +50,7 @@ Widget build(BuildContext context){
             AppLogo(),
             CustomTextField(hintText: 'Phone number or Email address', prefixIcon: Icons.email_outlined, controller: _emailController),
             CustomTextField(hintText: 'Password', prefixIcon: Icons.lock_outline, controller: _passswordController),
-            Center(child: ElevatedButton(onPressed: (){  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Homepage() ));}, child: Text('Log in'), ),),
+            Center(child: ElevatedButton(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Homepage() ));}, child: Text('Log in'), ),),
              Center(child:
               TextButton(child: Text('If you don\'t have an account: Signup',
             ),
@@ -38,5 +65,4 @@ Widget build(BuildContext context){
     )
   );
 }
-
 }
