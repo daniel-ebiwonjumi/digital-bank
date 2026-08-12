@@ -42,6 +42,7 @@ dependencies:
   google_fonts: ^8.2.0
   dio: ^5.11.0
   signals: ^7.1.0
+  flutter_secure_storage: ^11.0.0
 
 
 dev_dependencies:
@@ -54,6 +55,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  json_serializable: ^6.14.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
