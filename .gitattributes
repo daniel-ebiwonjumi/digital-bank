@@ -1,0 +1,10 @@
+#ignore biolerplates of android, web, ios, linux, windows and macos
+web/** linguist-documentation
+android/** linguist-documentation
+ios/** linguist-documentation
+macos/** linguist-documentation
+windows/** linguist-documentation
+linux/** linguist-documentation
+
+#Explicitly ensure dart is tracked
+*.dart linguist-detectable=true
