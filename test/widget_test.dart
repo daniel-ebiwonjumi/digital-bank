@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:social_and_recommendation_system/app/app.dart';
 
 import 'package:social_and_recommendation_system/main.dart';
 

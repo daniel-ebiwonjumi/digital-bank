@@ -1,2 +1,2 @@
-# [WIP] Social and Recommendation System using Flutter and NestJS 
+# [WIP] Digital Banking App using NestJS and Flutter
 
