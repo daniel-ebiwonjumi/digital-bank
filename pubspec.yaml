@@ -43,6 +43,9 @@ dependencies:
   dio: ^5.11.0
   signals: ^7.1.0
   flutter_secure_storage: ^11.0.0
+  local_auth: ^3.0.2
+  image_picker: ^1.2.3
+  pinput: ^6.0.2
 
 
 dev_dependencies:
