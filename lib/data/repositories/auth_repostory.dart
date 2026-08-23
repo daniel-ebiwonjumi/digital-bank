@@ -4,25 +4,25 @@ import '../services/auth_services/auth_service.dart';
 import '../services/auth_services/auth_token_storage.dart';
 
 class AuthRepository {
-  final AuthService auth;
-  final AuthTokenStorage tokenStorage;
+  final AuthService authService;
+  final AuthTokenStorage authTokenStorage;
 
   AuthRepository({
-    required this.auth,
-    required this.tokenStorage,
+    required this.authService,
+    required this.authTokenStorage,
   });
 
   Future<User> login({required String mobileNumberOrEmail, required String password}) async {
     try {
-      final response = await auth.login(mobileNumberOrEmail, password);
+      final response = await authService.login(mobileNumberOrEmail, password);
       final data = response.data;
 
-      await tokenStorage.saveTokens(
+      await authTokenStorage.saveTokens(
         accessToken: data['accessToken'],
         refreshToken: data['refreshToken'],
       );
 
-      return User.fromJson(data['user']);
+      return User.fromMap(data['user']);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -30,15 +30,15 @@ class AuthRepository {
 
   Future<User> register({required String mobileNumber, required String password}) async {
     try {
-      final response = await auth.register(mobileNumber, password);
+      final response = await authService.register(mobileNumber, password);
       final data = response.data;
 
-      await tokenStorage.saveTokens(
+      await authTokenStorage.saveTokens(
         accessToken: data['accessToken'],
         refreshToken: data['refreshToken'],
       );
 
-      return User.fromJson(data['user']);
+      return User.fromMap(data['user']);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -46,8 +46,8 @@ class AuthRepository {
 
   Future<User> getCurrentUser() async {
     try {
-      final response = await auth.getCurrentUser();
-      return User.fromJson(response.data);
+      final response = await authService.getCurrentUser();
+      return User.fromMap(response.data);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -55,26 +55,26 @@ class AuthRepository {
 
   Future<void> logout() async {
     try {
-      final refreshToken = await tokenStorage.getRefreshToken();
+      final refreshToken = await authTokenStorage.getRefreshToken();
       if (refreshToken != null) {
-        await auth.logout(refreshToken);
+        await authService.logout(refreshToken);
       }
     } catch (_) {
-      // Fail silently for server logout to ensure local data wipes
+      
     } finally {
-      await tokenStorage.clearTokens();
+      await authTokenStorage.clearTokens();
     }
   }
 
-  Future<void> refreshAccessToken() async {
+  Future<void> refresh() async {
     try {
-      final refreshToken = await tokenStorage.getRefreshToken();
+      final refreshToken = await authTokenStorage.getRefreshToken();
       if (refreshToken == null) throw Exception('No refresh token');
 
-      final response = await auth.refreshAccessToken(refreshToken);
-      await tokenStorage.saveAccessToken(response.data['accessToken']);
+      final response = await authService.refresh(refreshToken);
+      await authTokenStorage.saveAccessToken(response.data['accessToken']);
     } on DioException catch (e) {
-      await tokenStorage.clearTokens();
+      await authTokenStorage.clearTokens();
       throw _handleError(e);
     }
   }
@@ -88,7 +88,7 @@ class AuthRepository {
       }
       switch (e.response?.statusCode) {
         case 400: return 'Invalid request.';
-        case 401: return 'Invalid email or password.';
+        case 401: return 'Invalid email or mobile number or password.';
         case 403: return 'You are not allowed to perform this action.';
         case 404: return 'Resource not found.';
         case 429: return 'Too many attempts. Please try again later.';

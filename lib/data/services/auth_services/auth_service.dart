@@ -4,7 +4,7 @@ import 'auth_token_storage.dart';
 
 class AuthService {
   final Api api;
-  AuthService({required this.api});
+  AuthService(this.api);
 
   Future<Response> login(String mobileNumberOrEmail, String password) async {
     return await api.dio.post(
@@ -28,7 +28,7 @@ class AuthService {
     return await api.dio.post(ApiConfig.logout, data: {'refreshToken': refreshToken});
   }
 
-  Future<Response> refreshAccessToken(String refreshToken) async {
+  Future<Response> refresh(String refreshToken) async {
     return await api.dio.post(
       ApiConfig.refresh,
       data: {'refreshToken': refreshToken},
@@ -37,10 +37,10 @@ class AuthService {
 }
 
 class Api {
-  final AuthTokenStorage tokenStorage;
+  final AuthTokenStorage authTokenStorage;
   late final Dio dio;
 
-  Api(this.tokenStorage) {
+  Api(this.authTokenStorage) {
     dio = Dio(
       BaseOptions(
         baseUrl: '', //TODO: put the proper url here later
@@ -55,7 +55,7 @@ class Api {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final token = await tokenStorage.getAccessToken();
+          final token = await authTokenStorage.getAccessToken();
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }

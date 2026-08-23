@@ -1,0 +1,146 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:digital_bank/ui/auth/auth_view_model.dart';
+import 'register_view.dart';
+
+class LoginView extends StatefulWidget {
+  final AuthViewModel authViewModel;
+
+  const LoginView({super.key, required this.authViewModel});
+
+  @override
+  State<LoginView> createState() => LoginViewState();
+}
+
+class LoginViewState extends State<LoginView> {
+  final _formKey = GlobalKey<FormState>();
+
+  final _mobileNumberOrEmailController = TextEditingController();
+  final _passswordController = TextEditingController();
+
+  bool _loading = false;
+  bool _obscurePassword = true;
+
+  @override
+  void dispose() {
+    _mobileNumberOrEmailController.dispose();
+    _passswordController.dispose();
+
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    setState(() {
+      _loading = true;
+    });
+    final success = await widget.authViewModel.login(
+      mobileNumberOrEmail: _mobileNumberOrEmailController.text.trim(),
+      password: _passswordController.text,
+    );
+    if (!mounted) return;
+
+    setState(() => _loading = false);
+
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(widget.authViewModel.error ?? 'Login failed')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    'Welcome to the modern bank',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  TextFormField(
+                    controller: _mobileNumberOrEmailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Mobile number or Email',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Enter your mobile number or email';
+                      }
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  TextFormField(
+                    controller: _passswordController,
+                    obscureText: _obscurePassword,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter your password';
+                      }
+                      return null;
+                    },
+                  ),
+
+                  SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: _loading ? null : _login,
+                      child: _loading
+                          ? const SizedBox(
+                              width: 22,
+                              height: 22,
+                              child: CircularProgressIndicator(),
+                            )
+                          : const Text('Login'),
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  TextButton(onPressed: _loading ? null : (){
+                    Navigator.push(context, MaterialPageRoute(builder:(_) => RegisterView(authViewModel: widget.authViewModel,)));
+                  },
+                   child: const Text('Don\'t have an account? Get an account'),),
+
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
