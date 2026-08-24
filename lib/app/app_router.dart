@@ -1,5 +1,5 @@
 import 'package:digital_bank/ui/auth/auth_view_model.dart';
-import 'package:digital_bank/ui/home/home_view_model.dart';
+import 'package:digital_bank/ui/home/home_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:digital_bank/ui/auth/login_view.dart';
 import 'package:digital_bank/ui/auth/register_view.dart';
