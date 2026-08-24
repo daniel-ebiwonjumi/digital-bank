@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import 'package:digital_bank/data/repositories/user.dart';
-import 'package:digital_bank/data/repositories/auth_repostory.dart';
+import 'package:digital_bank/data/repositories/auth_repository/auth_repostory.dart';
 
 enum AuthStatus {
   loading,

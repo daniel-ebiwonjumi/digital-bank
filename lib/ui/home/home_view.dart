@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Homepage extends StatelessWidget{
-  const Homepage({super.key});
+class Home extends StatelessWidget{
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context){
@@ -11,7 +11,7 @@ class Homepage extends StatelessWidget{
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            children: [Text('Homepage', textAlign: TextAlign.left,),
+            children: [Text('Home', textAlign: TextAlign.left,),
               CustomAppBar(),
                   CreatePost(),
                   CreateStatus(),

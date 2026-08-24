@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'user.dart';
-import '../services/auth_services/auth_service.dart';
-import '../services/auth_services/auth_token_storage.dart';
+import '../user.dart';
+import '../../services/auth_services/auth_service.dart';
+import '../../services/auth_services/auth_token_storage.dart';
 
 class AuthRepository {
   final AuthService authService;
