@@ -123,7 +123,7 @@ setState(() {
                               height: 22,
                               child: CircularProgressIndicator(),
                             )
-                          : const Text('Get a banking account'),
+                          : const Text('Create Account'),
                     ),
                   ),
                 ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:digital_bank/ui/auth/auth_view_model.dart';
-import 'register_view.dart';
+import 'package:digital_bank/app/app_router.dart';
 
 class LoginView extends StatefulWidget {
   final AuthViewModel authViewModel;
@@ -114,6 +114,7 @@ class LoginViewState extends State<LoginView> {
                     },
                   ),
 
+                  const SizedBox(height: 24),
                   SizedBox(
                     height: 50,
                     child: ElevatedButton(
@@ -130,11 +131,13 @@ class LoginViewState extends State<LoginView> {
 
                   const SizedBox(height: 10),
 
-                  TextButton(onPressed: _loading ? null : (){
-                    Navigator.push(context, MaterialPageRoute(builder:(_) => RegisterView(authViewModel: widget.authViewModel,)));
-                  },
-                   child: const Text('Don\'t have an account? Get an account'),),
+                  TextButton(
+                    onPressed: _loading
+                        ? null
+                        : () => context.goNamed(AppRoutes.register),
 
+                    child: const Text('Don\'t have an account? Get an account'),
+                  ),
                 ],
               ),
             ),

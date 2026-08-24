@@ -1,6 +1,6 @@
 import 'package:digital_bank/ui/auth/auth_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:digital_bank/app/app_routes.dart';
+import 'package:digital_bank/app/app_router.dart';
 
 class DigitalBank extends StatefulWidget {
   final AuthViewModel authViewModel;
