@@ -43,7 +43,7 @@ class Api {
   Api(this.authTokenStorage) {
     dio = Dio(
       BaseOptions(
-        baseUrl: ApiConfig.baseUrl, //TODO: put the proper url here later
+        baseUrl: ApiConfig.baseUrl,
         connectTimeout: Duration(seconds: 15),
         receiveTimeout: Duration(seconds: 15),
         headers: {
