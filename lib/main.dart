@@ -2,6 +2,7 @@ import 'package:digital_bank/data/repositories/auth_repository/auth_repostory.da
 import 'package:digital_bank/data/repositories/home_repository/home_repository.dart';
 import 'package:digital_bank/data/services/auth_services/auth_service.dart';
 import 'package:digital_bank/data/services/auth_services/auth_token_storage.dart';
+import 'package:digital_bank/data/services/dio_config.dart';
 import 'package:digital_bank/data/services/home_service/home_service.dart';
 import 'package:digital_bank/ui/auth/auth_view_model.dart';
 import 'package:digital_bank/ui/home/home_view_model.dart';
@@ -14,8 +15,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   //Auth feature
   final authTokenStorage = AuthTokenStorage();
-  final api = Api(authTokenStorage);
-  final authService = AuthService(api);
+  final dioConfig = DioConfig();
+  final authService = AuthService(dioConfig);
   final authRepository = AuthRepository(
     authService: authService,
     authTokenStorage: authTokenStorage,
