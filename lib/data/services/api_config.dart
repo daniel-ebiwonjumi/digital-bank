@@ -11,3 +11,4 @@ class ApiConfig {
   //For the Home feature
   static const String home = '/home';
 }
+

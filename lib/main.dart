@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:digital_bank/app/app.dart';
 
 void main() {
+  //Find out later if this is really necessary even if
+  //I'm using flutter_secure_storage
   WidgetsFlutterBinding.ensureInitialized();
   //Auth feature
   final authTokenStorage = AuthTokenStorage();
