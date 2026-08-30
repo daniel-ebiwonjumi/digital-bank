@@ -25,14 +25,14 @@ bool _obscurePassword = true;
     super.dispose();
   }
 
-  Future<void> _login() async {
+  Future<void> _register() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 setState(() {
       _loading = true;
     });
-    final success = await widget.authViewModel.login(
+    final success = await widget.authViewModel.register(
       mobileNumberOrEmail: _mobileNumberController.text.trim(),
       password: _passswordController.text,
     );
@@ -116,7 +116,7 @@ setState(() {
                   SizedBox(
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: _loading ? null : _login,
+                      onPressed: _loading ? null : _register,
                       child: _loading
                           ? const SizedBox(
                               width: 22,
