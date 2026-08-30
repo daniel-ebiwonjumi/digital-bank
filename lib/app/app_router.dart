@@ -7,8 +7,9 @@ import 'package:digital_bank/ui/auth/register_view.dart';
 class AppRouter {
   final AuthViewModel authViewModel;
   late final GoRouter router;
+final HomeViewModel homeViewModel;
 
-  AppRouter(this.authViewModel) {
+  AppRouter({required this.authViewModel, required this.homeViewModel}) {
     router = GoRouter(
       initialLocation: '/',
       refreshListenable: authViewModel,
@@ -33,7 +34,7 @@ class AppRouter {
           name: AppRoutes.home,
           path: '/home',
           builder: (context, state) =>
-              HomePageView(authViewModel: authViewModel),
+              HomeView(authViewModel: authViewModel, homeViewModel: homeViewModel),
         ),
       ],
 
