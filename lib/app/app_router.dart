@@ -18,7 +18,7 @@ class AppRouter {
           name: AppRoutes.login,
           path: '/',
           builder: (context, state) {
-            return LoginView(authViewModel: authViewModel);
+            return LoginView(authViewModel);
           },
         ),
 
@@ -26,7 +26,7 @@ class AppRouter {
           name: AppRoutes.register,
           path: '/register',
           builder: (context, state) =>
-              RegisterView(authViewModel: authViewModel),
+              RegisterView(authViewModel),
         ),
 
         GoRoute(
