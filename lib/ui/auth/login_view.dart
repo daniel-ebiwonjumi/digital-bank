@@ -6,7 +6,7 @@ import 'package:digital_bank/app/app_router.dart';
 class LoginView extends StatefulWidget {
   final AuthViewModel authViewModel;
 
-  const LoginView({super.key, required this.authViewModel});
+  const LoginView(super.key, this.authViewModel);
 
   @override
   State<LoginView> createState() => LoginViewState();
