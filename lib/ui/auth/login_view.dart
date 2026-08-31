@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:digital_bank/ui/auth/auth_view_model.dart';
 import 'package:digital_bank/app/app_router.dart';
+import 'package:signals/signals.dart';
 
 class LoginView extends StatefulWidget {
   final AuthViewModel authViewModel;
 
-  const LoginView(super.key, this.authViewModel);
+  const LoginView(this.authViewModel);
 
   @override
   State<LoginView> createState() => LoginViewState();
