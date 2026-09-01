@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:digital_bank/ui/auth/auth_view_model.dart';
 import 'package:digital_bank/app/app_router.dart';
-import 'package:signals/signals.dart';
+import 'package:signals/signals_flutter.dart';
 
 class LoginView extends StatefulWidget {
   final AuthViewModel authViewModel;
@@ -19,8 +19,8 @@ class LoginViewState extends State<LoginView> {
   final _mobileNumberOrEmailController = TextEditingController();
   final _passswordController = TextEditingController();
 
-  bool _loading = false;
-  bool _obscurePassword = true;
+  final _loading = signal(false);
+  final _obscurePassword = signal(true);
 
   @override
   void dispose() {
@@ -34,16 +34,15 @@ class LoginViewState extends State<LoginView> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    setState(() {
-      _loading = true;
-    });
+      _loading.value = true;
+    ;
     final success = await widget.authViewModel.login(
       mobileNumberOrEmail: _mobileNumberOrEmailController.text.trim(),
       password: _passswordController.text,
     );
     if (!mounted) return;
 
-    setState(() => _loading = false);
+     _loading.value = false;
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -100,10 +99,8 @@ class LoginViewState extends State<LoginView> {
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
+                        onPressed: () {                     _obscurePassword.value = !_obscurePassword.value;
+                 
                         },
                       ),
                     ),
