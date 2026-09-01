@@ -27,6 +27,7 @@ class LoginViewState extends State<LoginView> {
     _mobileNumberOrEmailController.dispose();
     _passswordController.dispose();
 
+
     super.dispose();
   }
 
@@ -110,7 +111,7 @@ class LoginViewState extends State<LoginView> {
                       }
                       return null;
                     },
-                  );),
+                  )),
 
                   const SizedBox(height: 24),
                   SizedBox(
@@ -124,7 +125,7 @@ class LoginViewState extends State<LoginView> {
                               child: CircularProgressIndicator(),
                             )
                           : const Text('Login'),
-                    );),
+                    )),
                   ),
 
                   const SizedBox(height: 10),
@@ -135,7 +136,7 @@ class LoginViewState extends State<LoginView> {
                         : () => context.goNamed(AppRoutes.register),
 
                     child: const Text('Don\'t have an account? Get an account'),
-                  );),
+                  )),
                 ],
               ),
             ),
