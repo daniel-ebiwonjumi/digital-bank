@@ -87,15 +87,15 @@ class LoginViewState extends State<LoginView> {
 
                   const SizedBox(height: 16),
 
-                  TextFormField(
+                  SignalBuilder (builder: (context) => TextFormField(
                     controller: _passswordController,
-                    obscureText: _obscurePassword,
+                    obscureText: _obscurePassword.value,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword
+                          _obscurePassword.value
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
@@ -110,32 +110,32 @@ class LoginViewState extends State<LoginView> {
                       }
                       return null;
                     },
-                  ),
+                  );),
 
                   const SizedBox(height: 24),
                   SizedBox(
                     height: 50,
-                    child: ElevatedButton(
-                      onPressed: _loading ? null : _login,
-                      child: _loading
+                    child: SignalBuilder(builder: (context) => ElevatedButton(
+                      onPressed: _loading.value ? null : _login,
+                      child: _loading.value
                           ? const SizedBox(
                               width: 22,
                               height: 22,
                               child: CircularProgressIndicator(),
                             )
                           : const Text('Login'),
-                    ),
+                    );),
                   ),
 
                   const SizedBox(height: 10),
 
-                  TextButton(
-                    onPressed: _loading
+                  SignalBuilder (builder: (context) => TextButton(
+                    onPressed: _loading.value
                         ? null
                         : () => context.goNamed(AppRoutes.register),
 
                     child: const Text('Don\'t have an account? Get an account'),
-                  ),
+                  );),
                 ],
               ),
             ),
