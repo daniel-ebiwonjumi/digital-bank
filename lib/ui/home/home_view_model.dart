@@ -10,12 +10,12 @@ class HomeViewModel extends ChangeNotifier {
 
   HomeViewModel(this.homeRepository);
 
-  HomeStatus _status = HomeStatus.initial;
+  final status = signal<HomeStatus>(HomeStatus.initial);
+final balanceVisible = signal<bool>true;
+
   HomeData? _homeData;
   String? _errorMessage;
-  bool _balanceVisible = true;
-
-  HomeStatus get status => _status;
+  
   HomeData? get homeData => _homeData;
   String? get errorMessage => _errorMessage;
   bool get balanceVisible => _balanceVisible;
