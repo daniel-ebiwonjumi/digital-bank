@@ -88,7 +88,7 @@ class LoginViewState extends State<LoginView> {
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword.value
+                          _obscureLoginPassword.value
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
