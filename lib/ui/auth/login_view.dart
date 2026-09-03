@@ -92,7 +92,7 @@ class LoginViewState extends State<LoginView> {
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
-                        onPressed: () {                     _obscurePassword.value = !_obscurePassword.value;
+                        onPressed: () {                     authViewModel.obscureLoginPassword.value = !authViewModel.obscurePassword.value;
                  
                         },
                       ),
@@ -109,8 +109,8 @@ class LoginViewState extends State<LoginView> {
                   SizedBox(
                     height: 50,
                     child: SignalBuilder(builder: (context) => ElevatedButton(
-                      onPressed: _loading.value ? null : _login,
-                      child: _loading.value
+                      onPressed: authViewModel.loading.value ? null : _login,
+                      child: authViewModel.loading.value
                           ? const SizedBox(
                               width: 22,
                               height: 22,
@@ -123,7 +123,7 @@ class LoginViewState extends State<LoginView> {
                   const SizedBox(height: 10),
 
                   SignalBuilder (builder: (context) => TextButton(
-                    onPressed: _loading.value
+                    onPressed: authViewModel.loading.value
                         ? null
                         : () => context.goNamed(AppRoutes.register),
 
