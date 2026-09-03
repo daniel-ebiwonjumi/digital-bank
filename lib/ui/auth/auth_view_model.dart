@@ -95,6 +95,8 @@ final isObscureRegisterPassword = signal<bool>(true);
   }
 
   void dispose() {
+isObscureLoginPassowrd.dispose();
+isObscureRegisterPassword.dispose();
     status.dispose();
     user.dispose();
     error.dispose();
