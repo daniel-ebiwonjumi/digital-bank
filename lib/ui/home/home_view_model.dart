@@ -5,29 +5,25 @@ import 'package:flutter/foundation.dart';
 
 enum HomeStatus { initial, loading, success, error }
 
-class HomeViewModel extends ChangeNotifier {
+class HomeViewModel{
   final HomeRepository homeRepository;
 
   HomeViewModel(this.homeRepository);
 
+final HomeData? _homeData;
+HomeData get homeData => _homeData;
   final status = signal<HomeStatus>(HomeStatus.initial);
 final balanceVisible = signal<bool>true;
-
-  HomeData? _homeData;
-  String? _errorMessage;
+  final errorMessage = signal<String?>(null);
   
-  HomeData? get homeData => _homeData;
-  String? get errorMessage => _errorMessage;
-  bool get balanceVisible => _balanceVisible;
-  bool get isLoading => _status == HomeStatus.loading;
-  bool get hasError => _status == HomeStatus.error;
-  bool get hasData => _homeData != null;
+
+  final isLoading => compute( () => status == HomeStatus.loading);
+  final hasError => compute( () => status == HomeStatus.error);
+  final hasData => compute( ()=> homeData != null);
 
   Future<void> loadHome() async {
-    _status = HomeStatus.loading;
-    _errorMessage = null;
-
-    notifyListeners();
+    status.value = HomeStatus.loading;
+    errorMessage.value = null;
 
     try {
       final HomeData data = await homeRepository.getHomeData();
@@ -41,8 +37,6 @@ final balanceVisible = signal<bool>true;
       _status = HomeStatus.error;
       _errorMessage = 'Something went wrong, please try again';
     }
-
-    notifyListeners();
   }
 
   Future<void> refresh() async {
@@ -50,26 +44,26 @@ final balanceVisible = signal<bool>true;
       final HomeData data = await homeRepository.getHomeData();
 
       _homeData = data;
-      _status = HomeStatus.success;
-      _errorMessage = null;
+      status.value = HomeStatus.success;
+      errorMessage.value = null;
     } on AppException catch (error) {
-      _errorMessage = error.message;
+      errorMessage.value = error.message;
 
       if (_homeData == null) {
-        _status = HomeStatus.error;
+        status.value = HomeStatus.error;
       }
     } catch (_) {
       _errorMessage = 'Something went wrong, please try again.';
 
       if (_homeData == null) {
-        _status = HomeStatus.error;
+        sratus.value = HomeStatus.error;
       }
     }
   }
 
   void toggleBalanceVisibility() {
-    _balanceVisible = !_balanceVisible;
+    balanceVisible.value = !balanceVisible.value;
 
-    notifyListeners();
+  
   }
 }
