@@ -1,7 +1,7 @@
 import 'package:digital_bank/data/repositories/app_exeption.dart';
 import 'package:digital_bank/data/repositories/home_repository/home_data.dart';
 import 'package:digital_bank/data/repositories/home_repository/home_repository.dart';
-import 'package:flutter/foundation.dart';
+import 'package:signals/signals_flutter.dart';
 
 enum HomeStatus { initial, loading, success, error }
 
@@ -10,16 +10,15 @@ class HomeViewModel{
 
   HomeViewModel(this.homeRepository);
 
-final HomeData? _homeData;
-HomeData get homeData => _homeData;
+final homeData = signal<HomeData>(null);
   final status = signal<HomeStatus>(HomeStatus.initial);
 final balanceVisible = signal<bool>true;
   final errorMessage = signal<String?>(null);
   
 
-  final isLoading => compute( () => status == HomeStatus.loading);
-  final hasError => compute( () => status == HomeStatus.error);
-  final hasData => compute( ()=> homeData != null);
+  final isLoading => computed( () => status == HomeStatus.loading);
+  final hasError => computed( () => status == HomeStatus.error);
+  final hasData => computed( ()=> homeData != null);
 
   Future<void> loadHome() async {
     status.value = HomeStatus.loading;
@@ -28,14 +27,14 @@ final balanceVisible = signal<bool>true;
     try {
       final HomeData data = await homeRepository.getHomeData();
 
-      _homeData = data;
-      _status = HomeStatus.success;
+      homeData.value = data;
+      status.value = HomeStatus.success;
     } on AppException catch (error) {
-      _status = HomeStatus.error;
-      _errorMessage = error.message;
+      status.value = HomeStatus.error;
+      errorMessage.value = error.message;
     } catch (_) {
-      _status = HomeStatus.error;
-      _errorMessage = 'Something went wrong, please try again';
+      status.value = HomeStatus.error;
+      errorMessage.value = 'Something went wrong, please try again';
     }
   }
 
@@ -43,7 +42,7 @@ final balanceVisible = signal<bool>true;
     try {
       final HomeData data = await homeRepository.getHomeData();
 
-      _homeData = data;
+      homeData.value = data;
       status.value = HomeStatus.success;
       errorMessage.value = null;
     } on AppException catch (error) {
