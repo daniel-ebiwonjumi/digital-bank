@@ -19,9 +19,6 @@ class LoginViewState extends State<LoginView> {
   final _mobileNumberOrEmailController = TextEditingController();
   final _passswordController = TextEditingController();
 
-  final _loading = signal(false);
-  final _obscurePassword = signal(true);
-
   @override
   void dispose() {
     _mobileNumberOrEmailController.dispose();
@@ -35,18 +32,13 @@ class LoginViewState extends State<LoginView> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-      _loading.value = true;
-    ;
+  
     final success = await widget.authViewModel.login(
       mobileNumberOrEmail: _mobileNumberOrEmailController.text.trim(),
       password: _passswordController.text,
     );
     if (!mounted) return;
-
-     _loading.value = false;
-
-    if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(
+    if (!success) { ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(widget.authViewModel.error ?? 'Login failed')),
       );
     }
