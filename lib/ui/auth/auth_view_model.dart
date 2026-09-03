@@ -14,6 +14,8 @@ class AuthViewModel {
 
   AuthViewModel(this.authRepository);
 
+final isObscureLoginPassword = signal<bool>(true);
+final isObscureRegisterPassword = signal<bool>(true);
   final status = signal<AuthStatus>(AuthStatus.loading);
   final user = signal<User?>(null);
   final error = signal<String?>(null);
