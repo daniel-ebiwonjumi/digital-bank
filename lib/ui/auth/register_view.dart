@@ -14,9 +14,6 @@ final _formKey = GlobalKey<FormState>();
 final _mobileNumberController = TextEditingController();
 final _passswordController = TextEditingController();
 
-bool _loading = false;
-bool _obscurePassword = true;
-
  @override
   void dispose() {
     _mobileNumberController.dispose();
@@ -29,17 +26,11 @@ bool _obscurePassword = true;
     if (!_formKey.currentState!.validate()) {
       return;
     }
-setState(() {
-      _loading = true;
-    });
     final success = await widget.authViewModel.register(
       mobileNumberOrEmail: _mobileNumberController.text.trim(),
       password: _passswordController.text,
     );
     if (!mounted) return;
-
-    setState(() => _loading = false);
-
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(widget.authViewModel.error ?? 'Login failed')),
@@ -88,19 +79,19 @@ setState(() {
 
                   TextFormField(
                     controller: _passswordController,
-                    obscureText: _obscurePassword,
+                    obscureText: authViewModel.isObscurePassword.value,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword
+                          authViewModel.isObscurePassword.value
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
                           setState(() {
-                            _obscurePassword = !_obscurePassword;
+                            authViewModel.isObscurePassword.value = !authViewModel.isObscurePassword.value;
                           });
                         },
                       ),
@@ -116,7 +107,7 @@ setState(() {
                   SizedBox(
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: _loading ? null : _register,
+                      onPressed: authViewModel.loading ? null : _register,
                       child: _loading
                           ? const SizedBox(
                               width: 22,
