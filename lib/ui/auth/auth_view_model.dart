@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:signals_flutter/signals_flutter.dart';
 
 import 'package:digital_bank/data/repositories/user.dart';
 import 'package:digital_bank/data/repositories/auth_repository/auth_repostory.dart';
@@ -9,65 +9,53 @@ enum AuthStatus {
   unauthenticated,
 }
 
-class AuthViewModel extends ChangeNotifier {
+class AuthViewModel {
   final AuthRepository authRepository;
 
   AuthViewModel(this.authRepository);
 
-  AuthStatus _status = AuthStatus.loading;
-  User? _user;
-  String? _error;
+  final status = signal<AuthStatus>(AuthStatus.loading);
+  final user = signal<User?>(null);
+  final error = signal<String?>(null);
 
-  AuthStatus get status => _status;
-  User? get user => _user;
-  String? get error => _error;
-
-  bool get isAuthenticated =>
-      _status == AuthStatus.authenticated;
+  final isAuthenticated = computed(
+    () => status.value == AuthStatus.authenticated,
+  );
 
   Future<void> checkAuthentication() async {
-    _status = AuthStatus.loading;
-    _error = null;
-
-    notifyListeners();
+    status.value = AuthStatus.loading;
+    error.value = null;
 
     try {
-      _user = await authRepository.getCurrentUser();
+      user.value = await authRepository.getCurrentUser();
 
-      _status = AuthStatus.authenticated;
+      status.value = AuthStatus.authenticated;
     } catch (_) {
       await authRepository.logout();
 
-      _user = null;
-      _status = AuthStatus.unauthenticated;
+      user.value = null;
+      status.value = AuthStatus.unauthenticated;
     }
-
-    notifyListeners();
   }
 
   Future<bool> login({
     required String mobileNumberOrEmail,
     required String password,
   }) async {
-    _error = null;
-    notifyListeners();
+    error.value = null;
 
     try {
-      _user = await authRepository.login(
+      user.value = await authRepository.login(
         mobileNumberOrEmail: mobileNumberOrEmail,
         password: password,
       );
 
-      _status = AuthStatus.authenticated;
-
-      notifyListeners();
+      status.value = AuthStatus.authenticated;
 
       return true;
     } catch (e) {
-      _error = e.toString();
-      _status = AuthStatus.unauthenticated;
-
-      notifyListeners();
+      error.value = e.toString();
+      status.value = AuthStatus.unauthenticated;
 
       return false;
     }
@@ -76,28 +64,21 @@ class AuthViewModel extends ChangeNotifier {
   Future<bool> register({
     required String mobileNumber,
     required String password,
-   
   }) async {
-    _error = null;
-    notifyListeners();
+    error.value = null;
 
     try {
-      _user = await authRepository.register(
+      user.value = await authRepository.register(
         mobileNumber: mobileNumber,
         password: password,
-  
       );
 
-      _status = AuthStatus.authenticated;
-
-      notifyListeners();
+      status.value = AuthStatus.authenticated;
 
       return true;
     } catch (e) {
-      _error = e.toString();
-      _status = AuthStatus.unauthenticated;
-
-      notifyListeners();
+      error.value = e.toString();
+      status.value = AuthStatus.unauthenticated;
 
       return false;
     }
@@ -106,10 +87,15 @@ class AuthViewModel extends ChangeNotifier {
   Future<void> logout() async {
     await authRepository.logout();
 
-    _user = null;
-    _status = AuthStatus.unauthenticated;
-    _error = null;
+    user.value = null;
+    status.value = AuthStatus.unauthenticated;
+    error.value = null;
+  }
 
-    notifyListeners();
+  void dispose() {
+    status.dispose();
+    user.dispose();
+    error.dispose();
+    isAuthenticated.dispose();
   }
 }
