@@ -10,12 +10,11 @@ class HomeViewModel{
 
   HomeViewModel(this.homeRepository);
 
-final homeData = signal<HomeData>(null);
+final homeData = signal<HomeData?>(null);
   final status = signal<HomeStatus>(HomeStatus.initial);
-final balanceVisible = signal<bool>true;
+final balanceVisible = signal<bool>(true);
   final errorMessage = signal<String?>(null);
   
-
   final isLoading => computed( () => status == HomeStatus.loading);
   final hasError => computed( () => status == HomeStatus.error);
   final hasData => computed( ()=> homeData != null);

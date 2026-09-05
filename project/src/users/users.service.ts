@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-export class User {
-  userId: number;
-  username: string;
+export interface User{
+  id: string;
+  mobileNumber: string;
   password: string;
 }
 
@@ -10,18 +10,20 @@ export class User {
 export class UsersService {
   private readonly users: User[] = [
     {
-      userId: 1,
-      username: 'john',
+      id: '1',
+      mobileNumber: '8066556888',
       password: 'changeme',
     },
     {
-      userId: 2,
-      username: 'maria',
+      id: '2',
+      mobileNumber: '8023556888',
       password: 'guess',
     },
   ];
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+
+  async findMobileNumber(mobileNumber: string): Promise<User | undefined> {
+
+    return this.users.find((user) => user.mobileNumber === mobileNumber);
   }
 }

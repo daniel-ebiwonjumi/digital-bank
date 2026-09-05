@@ -3,6 +3,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { UsersModule } from '../users/users.module';
+import { AuthService } from './auth.service';
 
 @Module({
   controllers: [AuthController],

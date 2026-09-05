@@ -1,4 +1,4 @@
-import 'package:signals_flutter/signals_flutter.dart';
+import 'package:signals/signals_flutter.dart';
 
 import 'package:digital_bank/data/repositories/user.dart';
 import 'package:digital_bank/data/repositories/auth_repository/auth_repostory.dart';
@@ -21,9 +21,6 @@ final isObscureRegisterPassword = signal<bool>(true);
   final user = signal<User?>(null);
   final error = signal<String?>(null);
 
-  final isAuthenticated = computed(
-    () => status.value == AuthStatus.authenticated,
-  );
 
   Future<void> checkAuthentication() async {
     status.value = AuthStatus.loading;
@@ -96,11 +93,11 @@ final isObscureRegisterPassword = signal<bool>(true);
   }
 
   void dispose() {
-isObscureLoginPassowrd.dispose();
+isObscureLoginPassoword.dispose();
 isObscureRegisterPassword.dispose();
     status.dispose();
     user.dispose();
     error.dispose();
-    isAuthenticated.dispose();
+  
   }
 }

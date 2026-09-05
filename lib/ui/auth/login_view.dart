@@ -109,7 +109,7 @@ class LoginViewState extends State<LoginView> {
                   SizedBox(
                     height: 50,
                     child: SignalBuilder(builder: (context) => ElevatedButton(
-                      onPressed: authViewModel.isLoading.value ? null : _login,
+                      onPressed: authViewModel?.isLoading.value ? null : _login,
                       child: authViewModel.isLoading.value
                           ? const SizedBox(
                               width: 22,
