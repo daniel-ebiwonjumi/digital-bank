@@ -21,9 +21,7 @@ export class UsersService {
     },
   ];
 
-
-  async findMobileNumber(mobileNumber: string): Promise<User | undefined> {
-
+  findMobileNumber(mobileNumber: string): User | undefined {
     return this.users.find((user) => user.mobileNumber === mobileNumber);
   }
 }

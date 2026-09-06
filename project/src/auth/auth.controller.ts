@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -7,7 +7,8 @@ export class AuthController {
     
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    login(@Body() LoginDto: Record<String, any>) {
-        return this.authservice.login(LoginDto.mobileNumber, LoginDto.pass)
+    login(@Body() LoginDto: Record<string, string>) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return this.authservice.login(LoginDto.mobileNumber, LoginDto.pass);
 }
 }
