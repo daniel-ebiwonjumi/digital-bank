@@ -12,3 +12,28 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id String @unique
+  mobileNumber String @unique
+  email String
+  name  String?
+  passwordHash String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Session {
+  id String @id @default(uuid())
+  userId String
+  
+  refreshTokenHash String
+  expiresAt DateTime
+  revokedAt DateTime?
+
+  createdAt DateTime @default(now())
+  lastUsedAt DateTime?
+
+
+  @@index([userId])
+}
