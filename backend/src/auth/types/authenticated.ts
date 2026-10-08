@@ -1,11 +1,11 @@
 import type { FastifyRequest } from "fastify";
 
-export type AuthenticatedUser = {
+export interface AuthenticatedUser {
     id: string,
     mobileNumber: string,
     email: string | null,
 }
 
-export type AuthenticatedRequest = FastifyRequest & {
+export interface AuthenticatedRequest extends FastifyRequest  {
     user: AuthenticatedUser
 }
