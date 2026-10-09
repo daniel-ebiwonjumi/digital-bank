@@ -14,18 +14,16 @@ The project prioritizes not only feature development but also the engineering pr
 
 Technology Stack
 
-Component| Technology
-Mobile| Flutter, Dart
-State management| BLoC
-Mobile architecture| MVVM
-Backend| NestJS, TypeScript
-HTTP platform| Fastify
-Database| PostgreSQL
-ORM| Drizzle ORM
-Authentication| Passport strategies, JWT
-Password hashing| Argon2
+Mobile and web -  Flutter, Dart
+State management - BLoC
+Mobile architecture - Model-View-ViewModel (MVVM)
+Backend -  NestJS, TypeScript
+HTTP platform - Fastify
+Database - PostgreSQL
+Object Relational Mapper - Drizzle ORM
+Authentication - Passport strategies, JWT
+Password hashing - Argon2
 
-The table should reflect the technologies actually integrated into the project. Remove or qualify components that remain planned.
 
 System Architecture
 
