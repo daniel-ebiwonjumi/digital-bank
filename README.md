@@ -164,6 +164,10 @@ The project is under active development. Planned milestones include completing a
 
 Features will be marked as implemented only when supported by the corresponding code and, where appropriate, automated tests.
 
+LICENSE 
+
+This project is licensed under the MIT License. See the license.md file for details.
+
 DISCLAIMER
 
 Although this project is being designed and developed with production-grade software engineering principles in mind, it is not intended for use as a live financial service. It must not be used to store real funds or process real financial transactions.
