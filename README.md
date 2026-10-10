@@ -2,7 +2,22 @@ Digital Banking Application
 
 A mobile-first digital banking application built with Flutter, Dart, NestJS, TypeScript, and PostgreSQL.
 
-Status: In development.
+Status: In development
+
+TABLE OF CONTENTS
+
+Overview
+Features
+Technology Stack
+System Architecture
+Architectural Decisions
+Security and Authentication
+Database Design
+API Design
+Testing
+Project Status
+License
+Disclaimer
 
 OVERVIEW
 
