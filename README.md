@@ -15,7 +15,7 @@ Security and Authentication
 Database Design
 API Design
 Testing
-Project Status
+Current Status and Future Work
 License
 Disclaimer
 
