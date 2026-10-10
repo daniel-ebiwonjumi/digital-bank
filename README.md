@@ -4,7 +4,7 @@ A mobile-first digital banking application built with Flutter, Dart, NestJS, Typ
 
 Status: In development.
 
-Overview
+OVERVIEW
 
 A digital banking and wallet application designed to explore secure authentication, modular backend architecture, relational data modeling, and reliable financial transaction processing.
 
@@ -12,7 +12,7 @@ The application uses Flutter for the mobile client and NestJS for the backend, w
 
 The project prioritizes not only feature development but also the engineering principles required to build maintainable software that handles sensitive user information and financial operations.
 
-Technology Stack
+TECHNOLOGY STACK
 
 Mobile and web -  Flutter, Dart
 State management - BLoC
@@ -25,36 +25,31 @@ Authentication - Passport strategies, JWT
 Password hashing - Argon2
 
 
-System Architecture
+SYSTEM ARCHITECTURE 
 
-┌─────────────────────────────────────┐
-│          Flutter Mobile App         │
-│                                     │
-│  View → ViewModel → Repository      │
-│             │                       │
-│       BLoC State Management         │
-└──────────────────┬──────────────────┘
-                   │ HTTP / JSON
-                   ▼
-┌─────────────────────────────────────┐
-│           NestJS Backend            │
-│                                     │
-│  Controllers → Services             │
-│       │            │                │
-│  Guards/Pipes   Business Rules      │
-│                    │                │
-│               Data Access           │
-└──────────────────┬──────────────────┘
-                   │ Drizzle ORM
-                   ▼
-┌─────────────────────────────────────┐
-│             PostgreSQL              │
-│       Relational Data Storage       │
-└─────────────────────────────────────┘
+Flutter UI (View)
+        |
+ViewModel (MVVM)
+        |
+BLoC (Event → State)
+        |
+Repository / API Client
+        |
+        | HTTP / JSON
+        |
+NestJS Controllers
+        |
+Guards / Pipes
+        |
+NestJS Services (Business Logic)
+        |
+Drizzle ORM
+        |
+PostgreSQL Database
 
-This illustrates the intended architecture. Adapt it to match the implemented component boundaries.
+This illustrates the intended architecture.
 
-Architectural Responsibilities
+ARCHITECTURAL RESPONSIBILITIES 
 
 - Presentation: Flutter views render application state and collect user input.
 - State management: BLoC coordinates user events, asynchronous operations, and UI state transitions.
@@ -62,7 +57,7 @@ Architectural Responsibilities
 - Backend: NestJS handles request validation, authentication, authorization, and business logic.
 - Persistence: Drizzle ORM provides typed database access, while PostgreSQL enforces relational constraints and transactional guarantees.
 
-Architectural Decisions
+ARCHITECTURAL DECISION 
 
 1. MVVM and Separation of Concerns
 
@@ -102,11 +97,11 @@ Compared with Prisma's more abstract query API and TypeORM's entity-oriented abs
 
 Its lightweight approach can be advantageous for latency-sensitive endpoints and complex relational queries because developers can reason more directly about the SQL being executed.
 
-However, actual performance depends on query design, generated SQL, database indexes, connection management, data volume, and workload. Drizzle is not inherently faster in every scenario than Prisma or TypeORM.
+However, actual performance also depends on query design, generated SQL, database indexes, connection management, data volume, and workload. 
 
 PostgreSQL remains responsible for enforcing database constraints and providing transaction guarantees. Using an ORM does not eliminate the need to understand SQL, isolation levels, locking, or concurrency.
 
-Security and Authentication
+SECURITY AND AUTHENTICATION
 
 The application is designed around server-enforced security boundaries.
 
@@ -119,7 +114,7 @@ The application is designed around server-enforced security boundaries.
 
 A valid token establishes an authenticated identity; it does not automatically authorize access to every resource. Resource ownership and permissions must be checked independently.
 
-Financial Transaction Integrity
+FINANCIAL TRANSACTION INTEGRITY
 
 Financial operations require stronger guarantees than ordinary CRUD workflows. The transfer implementation will be designed around the following invariants:
 
@@ -132,9 +127,7 @@ Financial operations require stronger guarantees than ordinary CRUD workflows. T
 
 PostgreSQL transactions, appropriate locking or conditional updates, database constraints, and application-level business rules will be used where necessary to preserve consistency.
 
-These are design requirements; the README should identify which guarantees have been implemented and tested as development progresses.
-
-Database Design
+DATABASE DESIGN 
 
 PostgreSQL provides relational storage for the application's core entities.
 
@@ -146,24 +139,15 @@ Drizzle ORM provides typed schema definitions and database queries. Database con
 
 The final schema will define the precise relationships and constraints required by the implemented workflows.
 
-API Design
+API DESIGN 
 
 The NestJS backend exposes an HTTP API consumed by the Flutter client.
 
 The API is organized around distinct application responsibilities, with controllers handling requests and services implementing business operations.
 
-Planned resource groups include:
-
-Resource| Responsibility
-Authentication| Registration, login, and token handling
-Users| Account and profile information
-Wallets| Wallet information and balance retrieval
-Transfers| Transfer initiation and processing
-Transactions| Transaction history
-
 All sensitive operations are validated and authorized on the backend. API endpoints must not rely on client-supplied balances, identities, or security decisions.
 
-Testing Strategy
+TESTING STRATEGY
 
 Testing will focus on application correctness and security boundaries:
 
@@ -174,12 +158,12 @@ Testing will focus on application correctness and security boundaries:
 
 Tests should cover failure scenarios as well as successful requests. In particular, financial invariants must be verified against the actual database behavior rather than inferred from application code alone.
 
-Current Status and Future Work
+CURRENT STATUS AND FUTURE WORK
 
 The project is under active development. Planned milestones include completing authentication, implementing wallet and transfer workflows, strengthening session management, expanding automated test coverage, and introducing monitoring and suspicious-activity detection.
 
 Features will be marked as implemented only when supported by the corresponding code and, where appropriate, automated tests.
 
-Disclaimer
+DISCLAIMER
 
-This is a software engineering project for learning and demonstrating technical ability. It is not a production banking service and must not be used to store real funds or process real financial transactions.
+This is a software engineering project for learning and demonstrating technical ability. 
