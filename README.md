@@ -166,4 +166,4 @@ Features will be marked as implemented only when supported by the corresponding 
 
 DISCLAIMER
 
-This is a software engineering project for learning and demonstrating technical ability. 
+Although this project is being designed and developed with production-grade software engineering principles in mind, it is not intended for use as a live financial service. It must not be used to store real funds or process real financial transactions.
