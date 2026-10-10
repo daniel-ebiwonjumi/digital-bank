@@ -1,4 +1,4 @@
-Digital Banking Application
+[WIP] Digital Banking Application
 
 A mobile-first digital banking application built with Flutter, Dart, NestJS, TypeScript, and PostgreSQL.
 
