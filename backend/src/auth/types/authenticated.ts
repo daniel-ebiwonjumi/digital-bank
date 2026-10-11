@@ -1,7 +1,11 @@
-import type { FastifyRequest } from "fastify"
+import type { FastifyRequest } from "fastify";
 
-declare module 'fastify' {
-    Interface FastifyRequest {
-        user: User
-    }
+export type AuthenticatedUser = {
+    id: string,
+    mobileNumber: string,
+    email: string | null,
+}
+
+export type AuthenticatedRequest = FastifyRequest & {
+    user: AuthenticatedUser
 }
