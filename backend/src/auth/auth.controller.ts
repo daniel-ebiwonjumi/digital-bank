@@ -1,7 +1,6 @@
 import { Controller, Post, UseGuards, Request  } from '@nestjs/common';
 import { LocalAuthGuard } from './auth.guard.js';
 import type { AuthenticatedRequest } from './types/authenticated.js';
-import { FastifyRequest } from 'fastify';
 
 
 @Controller('auth')
