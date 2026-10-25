@@ -1,4 +1,6 @@
 import 'package:digital_bank/ui/auth/auth_view_model.dart';
+import 'package:digital_bank/ui/auth/bloc/auth_bloc.dart';
+import 'package:digital_bank/ui/auth/bloc/auth_state.dart';
 import 'package:digital_bank/ui/home/home_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:digital_bank/ui/auth/login_view.dart';
@@ -6,41 +8,38 @@ import 'package:digital_bank/ui/auth/register_view.dart';
 import 'package:digital_bank/ui/home/home_view_model.dart';
 
 class AppRouter {
-  final AuthViewModel authViewModel;
   late final GoRouter router;
-final HomeViewModel homeViewModel;
+  final AuthBloc authBloc;
 
-  AppRouter({required this.authViewModel, required this.homeViewModel}) {
+  AppRouter(this.authBloc) {
     router = GoRouter(
       initialLocation: '/',
-      refreshListenable: authViewModel,
+      refreshListenable: _authRefreshNotifier,
 
       routes: <RouteBase>[
         GoRoute(
           name: AppRoutes.login,
           path: '/',
           builder: (context, state) {
-            return LoginView(authViewModel);
+            return LoginView();
           },
         ),
 
         GoRoute(
           name: AppRoutes.register,
           path: '/register',
-          builder: (context, state) =>
-              RegisterView(authViewModel),
+          builder: (context, state) => RegisterView(),
         ),
 
         GoRoute(
           name: AppRoutes.home,
           path: '/home',
-          builder: (context, state) =>
-              HomeView(authViewModel: authViewModel, homeViewModel: homeViewModel),
+          builder: (context, state) => HomeView(),
         ),
       ],
 
       redirect: (context, state) {
-        final status = authViewModel.status;
+        final status = authBloc.state.status;
         final currentLoc = state.matchedLocation;
 
         if (status == AuthStatus.loading) {
@@ -62,6 +61,10 @@ final HomeViewModel homeViewModel;
       },
     );
   }
+  void dispose() {
+    router.dispose();
+    _authRefreshNotifier.dispose();
+  }
 }
 
 class AppRoutes {
@@ -69,9 +72,3 @@ class AppRoutes {
   static const String login = '/';
   static const String register = 'register';
 }
-
-                    
-                       
-                                  
-                           
-                  

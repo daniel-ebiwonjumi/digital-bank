@@ -4,7 +4,7 @@ sealed class AuthEvent extends Equatable {
 const AuthEvent();
 
 @override
-List<Object?> props = [];
+List<Object?> get props => [];
  }
 
 final class AuthCheckRequested extends AuthEvent { 
@@ -20,7 +20,7 @@ required this.mobileNumberOrEmail, required this.password
 });
 
 @override
-List<Object?> props = [mobileNumberOrEmail, password];
+List<Object?> get props => [mobileNumberOrEmail, password];
 }
 
 final class AuthRegisterRequested extends AuthEvent {
@@ -32,7 +32,7 @@ required this.mobileNumber, required this.password
 });
 
 @override
-List<Object?> props = [mobileNumber, password];
+List<Object?> get props => [mobileNumber, password];
 }
 
 final class AuthLogoutRequested extends AuthEvent { 

@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service.js';
 import * as argon2 from 'argon2';
-
+import { JwtService } from '@nestjs/jwt';
+import type { User } from './types/authenticated.js';
 
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService,
+    private jwtService: JwtService,
+  ) { }
   
   async register(mobileNumber: string, password: string) {
     const passwordHash = await argon2.hash(password);
@@ -23,5 +26,13 @@ export class AuthService {
 
     const { passwordHash,...safeUser } = userExists;
     return safeUser;
+  }
+ 
+
+  async login(user: User) {
+    const payload = { username: user.mobileNumber, sub: user.userId };
+    return {
+      access_token: this.jwtService.sign(payload)
+    }
   }
 }

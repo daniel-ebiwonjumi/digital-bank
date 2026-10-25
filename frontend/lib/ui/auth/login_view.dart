@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:digital_bank/ui/auth/auth_view_model.dart';
 import 'package:digital_bank/app/app_router.dart';
-import 'package:signals/signals_flutter.dart';
+
 
 class LoginView extends StatefulWidget {
   final AuthViewModel authViewModel;
