@@ -1,15 +1,15 @@
-import 'package:digital_bank/ui/auth/auth_view_model.dart';
+import 'dart:async';
 import 'package:digital_bank/ui/auth/bloc/auth_bloc.dart';
 import 'package:digital_bank/ui/auth/bloc/auth_state.dart';
-import 'package:digital_bank/ui/home/home_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:digital_bank/ui/auth/login_view.dart';
 import 'package:digital_bank/ui/auth/register_view.dart';
-import 'package:digital_bank/ui/home/home_view_model.dart';
 
 class AppRouter {
-  late final GoRouter router;
   final AuthBloc authBloc;
+  late final GoRouter router;
+  late final _AuthRefreshNotifier _authRefreshNotifier;
 
   AppRouter(this.authBloc) {
     router = GoRouter(
@@ -29,12 +29,6 @@ class AppRouter {
           name: AppRoutes.register,
           path: '/register',
           builder: (context, state) => RegisterView(),
-        ),
-
-        GoRoute(
-          name: AppRoutes.home,
-          path: '/home',
-          builder: (context, state) => HomeView(),
         ),
       ],
 
@@ -64,6 +58,22 @@ class AppRouter {
   void dispose() {
     router.dispose();
     _authRefreshNotifier.dispose();
+  }
+}
+
+class _AuthRefreshNotifier extends ChangeNotifier {
+  _AuthRefreshNotifier(AuthBloc authBloc) {
+    _subscription = authBloc.stream.listen((_) {
+      notifyListeners();
+    });
+  }
+
+  late final StreamSubscription<AuthState> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
   }
 }
 

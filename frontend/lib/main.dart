@@ -26,14 +26,9 @@ void main() {
     authTokenStorage: authTokenStorage,
   );
 
-  final appRouter = AppRouter(
-   
-  );
 
   //Home feature
-  final homeService = HomeService();
-  final homeRepository = HomeRepository(homeService);
-  final homeViewModel = HomeViewModel(homeRepository);
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -43,7 +38,7 @@ void main() {
               AuthBloc(authRepository)..add(const AuthCheckRequested()),
         ),
       ],
-      child: const DigitalBank(appRouter: appRouter),
+      child: const DigitalBank(),
     ),
   );
 }

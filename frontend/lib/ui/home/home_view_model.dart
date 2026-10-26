@@ -1,4 +1,4 @@
-import 'package:digital_bank/data/repositories/app_exeption.dart';
+/*import 'package:digital_bank/data/repositories/app_exeption.dart';
 import 'package:digital_bank/data/repositories/home_repository/home_data.dart';
 import 'package:digital_bank/data/repositories/home_repository/home_repository.dart';
 import 'package:signals/signals_flutter.dart';
@@ -65,3 +65,5 @@ final balanceVisible = signal<bool>(true);
   
   }
 }
+
+*/

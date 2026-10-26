@@ -1,22 +1,27 @@
-import 'package:digital_bank/ui/auth/auth_view_model.dart';
+import 'package:digital_bank/ui/auth/bloc/auth_bloc.dart';
+import 'package:digital_bank/ui/auth/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:digital_bank/app/app_router.dart';
 
-class RegisterView extends StatefulWidget{
-  final AuthViewModel authViewModel;
-  const RegisterView(super.key, this.authViewModel);
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<RegisterView> createState() => _RegisterViewState();
+  State<RegisterView> createState() => LoginViewState();
 }
-class _RegisterViewState extends State<RegisterView> {
-final _formKey = GlobalKey<FormState>();
 
-final _mobileNumberController = TextEditingController();
-final _passswordController = TextEditingController();
+class LoginViewState extends State<RegisterView> {
+  final _formKey = GlobalKey<FormState>();
 
- @override
+  final mobileNumberController = TextEditingController();
+  final _passswordController = TextEditingController();
+  final bool _obscurePassword = true;
+
+  @override
   void dispose() {
-    _mobileNumberController.dispose();
+    mobileNumberController.dispose();
     _passswordController.dispose();
 
     super.dispose();
@@ -26,24 +31,18 @@ final _passswordController = TextEditingController();
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    final success = await widget.authViewModel.register(
-      mobileNumberOrEmail: _mobileNumberController.text.trim(),
-      password: _passswordController.text,
+
+    context.read<AuthBloc>().add(
+      AuthRegisterRequested(
+        mobileNumber: mobileNumberController.text.trim(),
+        password: _passswordController.text,
+      ),
     );
-    if (!mounted) return;
-    if (!success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(widget.authViewModel.error ?? 'Login failed')),
-      );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Get a banking account'),
-      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -54,7 +53,7 @@ final _passswordController = TextEditingController();
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Text(
-                    'Welcome to the modern bank',
+                    'Welcome',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
@@ -62,14 +61,14 @@ final _passswordController = TextEditingController();
                   const SizedBox(height: 40),
 
                   TextFormField(
-                    controller: _mobileNumberController,
+                    controller: mobileNumberController,
                     decoration: const InputDecoration(
-                      labelText: 'Mobile number',
+                      labelText: 'Mobile number or Email',
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Enter your mobile number';
+                        return 'Enter your mobile number or email';
                       }
                       return null;
                     },
@@ -79,21 +78,17 @@ final _passswordController = TextEditingController();
 
                   TextFormField(
                     controller: _passswordController,
-                    obscureText: authViewModel.isObscurePassword.value,
+                    obscureText: _obscurePassword,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          authViewModel.isObscurePassword.value
+                          _obscurePassword
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
-                        onPressed: () {
-                          setState(() {
-                            authViewModel.isObscurePassword.value = !authViewModel.isObscurePassword.value;
-                          });
-                        },
+                        onPressed: () {},
                       ),
                     ),
                     validator: (value) {
@@ -104,19 +99,18 @@ final _passswordController = TextEditingController();
                     },
                   ),
 
+                  const SizedBox(height: 24),
                   SizedBox(
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: authViewModel.loading ? null : _register,
-                      child: _loading
-                          ? const SizedBox(
-                              width: 22,
-                              height: 22,
-                              child: CircularProgressIndicator(),
-                            )
-                          : const Text('Create Account'),
+                      onPressed: _register,
+                      child: const Text('register'),
                     ),
                   ),
+
+                  const SizedBox(height: 10),
+
+                 
                 ],
               ),
             ),

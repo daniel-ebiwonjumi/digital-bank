@@ -1,12 +1,12 @@
+import 'package:digital_bank/ui/auth/bloc/auth_bloc.dart';
+import 'package:digital_bank/ui/auth/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:digital_bank/app/app_router.dart';
 
-
 class LoginView extends StatefulWidget {
-  final AuthViewModel authViewModel;
-
-  const LoginView(this.authViewModel);
+  const LoginView({super.key});
 
   @override
   State<LoginView> createState() => LoginViewState();
@@ -17,12 +17,12 @@ class LoginViewState extends State<LoginView> {
 
   final _mobileNumberOrEmailController = TextEditingController();
   final _passswordController = TextEditingController();
+  final bool _obscurePassword = true;
 
   @override
   void dispose() {
     _mobileNumberOrEmailController.dispose();
     _passswordController.dispose();
-
 
     super.dispose();
   }
@@ -31,16 +31,13 @@ class LoginViewState extends State<LoginView> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-  
-    final success = await widget.authViewModel.login(
-      mobileNumberOrEmail: _mobileNumberOrEmailController.text.trim(),
-      password: _passswordController.text,
+
+    context.read<AuthBloc>().add(
+      AuthLoginRequested(
+        mobileNumberOrEmail: _mobileNumberOrEmailController.text.trim(),
+        password: _passswordController.text,
+      ),
     );
-    if (!mounted) return;
-    if (!success) { ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(widget.authViewModel.error ?? 'Login failed')),
-      );
-    }
   }
 
   @override
@@ -56,7 +53,7 @@ class LoginViewState extends State<LoginView> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Text(
-                    'Welcome to the modern bank',
+                    'Welcome',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
@@ -79,21 +76,19 @@ class LoginViewState extends State<LoginView> {
 
                   const SizedBox(height: 16),
 
-                  SignalBuilder (builder: (context) => TextFormField(
+                  TextFormField(
                     controller: _passswordController,
-                    obscureText: _obscurePassword.value,
+                    obscureText: _obscurePassword,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureLoginPassword.value
+                          _obscurePassword
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
-                        onPressed: () {                     authViewModel.obscureLoginPassword.value = !authViewModel.obscurePassword.value;
-                 
-                        },
+                        onPressed: () {},
                       ),
                     ),
                     validator: (value) {
@@ -102,32 +97,24 @@ class LoginViewState extends State<LoginView> {
                       }
                       return null;
                     },
-                  )),
+                  ),
 
                   const SizedBox(height: 24),
                   SizedBox(
                     height: 50,
-                    child: SignalBuilder(builder: (context) => ElevatedButton(
-                      onPressed: authViewModel?.isLoading.value ? null : _login,
-                      child: authViewModel.isLoading.value
-                          ? const SizedBox(
-                              width: 22,
-                              height: 22,
-                              child: CircularProgressIndicator(),
-                            )
-                          : const Text('Login'),
-                    )),
+                    child: ElevatedButton(
+                      onPressed: _login,
+                      child: const Text('Login'),
+                    ),
                   ),
 
                   const SizedBox(height: 10),
 
-                  SignalBuilder (builder: (context) => TextButton(
-                    onPressed: authViewModel.isLoading.value
-                        ? null
-                        : () => context.goNamed(AppRoutes.register),
+                  TextButton(
+                    onPressed: () => context.goNamed(AppRoutes.register),
 
                     child: const Text('Don\'t have an account? Get an account'),
-                  )),
+                  ),
                 ],
               ),
             ),
