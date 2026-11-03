@@ -1,6 +1,6 @@
 class ApiConfig {
   //TODO: I need to edit the above Url later and put the right url
-  static const String baseUrl = '';
+  static const String baseUrl = 'http://localhost:3000';
   //For the Auth feature
   static const String login = '/auth/login';
   static const String register = '/auth/register';

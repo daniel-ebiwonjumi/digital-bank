@@ -12,6 +12,7 @@ class AppRouter {
   late final _AuthRefreshNotifier _authRefreshNotifier;
 
   AppRouter(this.authBloc) {
+    _authRefreshNotifier = _AuthRefreshNotifier(authBloc);
     router = GoRouter(
       initialLocation: '/',
       refreshListenable: _authRefreshNotifier,
@@ -41,12 +42,12 @@ class AppRouter {
         }
         if (status == AuthStatus.unauthenticated) {
           if (currentLoc == '/register') return null;
-          return currentLoc == '/login' ? null : '/login';
+          return currentLoc == '/' ? null : '/';
         }
 
         if (status == AuthStatus.authenticated) {
           if (currentLoc == '/' ||
-              currentLoc == '/login' ||
+              currentLoc == '/' ||
               currentLoc == '/register') {
             return '/home';
           }
