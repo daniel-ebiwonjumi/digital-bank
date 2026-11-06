@@ -5,7 +5,7 @@ class User {
   final String? name;
   User({required this.id, required this.email, required this.mobileNumber, this.name});
 
-  factory User.fromMap(Map<String, dynamic> json) {
+  factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'] as String,
       email: json['email'] as String,

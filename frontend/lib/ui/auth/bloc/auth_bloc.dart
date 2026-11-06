@@ -43,7 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthState(status: AuthStatus.authenticated, user: user));
     } catch (_) {
       emit(
-        AuthState(status: AuthStatus.authenticated, error: 'Unable to login'),
+        AuthState(status: AuthStatus.unauthenticated, error: 'Unable to login'),
       );
     }
   }
@@ -63,7 +63,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch (_) {
       emit(
         AuthState(
-          status: AuthStatus.authenticated,
+          status: AuthStatus.unauthenticated,
           error: 'Unable to Register',
         ),
       );

@@ -22,7 +22,7 @@ class AuthRepository {
         refreshToken: data['refreshToken'],
       );
 
-      return User.fromMap(data['user']);
+      return User.fromJson(data['user']);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -38,7 +38,7 @@ class AuthRepository {
         refreshToken: data['refreshToken'],
       );
 
-      return User.fromMap(data['user']);
+      return User.fromJson(data['user']);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -47,7 +47,7 @@ class AuthRepository {
   Future<User> getCurrentUser() async {
     try {
       final response = await authService.getCurrentUser();
-      return User.fromMap(response.data);
+      return User.fromJson(response.data);
     } on DioException catch (e) {
       throw _handleError(e);
     }

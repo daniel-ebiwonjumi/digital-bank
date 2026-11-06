@@ -15,7 +15,7 @@ class HomeData {
 
   factory HomeData.fromMap(Map<String, dynamic> json) {
     return HomeData(
-      user: User.fromMap(json['user'] as Map<String, dynamic>),
+      user: User.fromJson(json['user'] as Map<String, dynamic>),
       wallet: Wallet.fromMap(json['wallet'] as Map<String, dynamic>),
       transactions: (json['transactions'] as List<dynamic>)
           .map((item) => Transaction.fromMap(item as Map<String, dynamic>))
