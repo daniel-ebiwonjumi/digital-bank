@@ -1,3 +1,8 @@
+import 'package:digital_bank/data/models/notification_model.dart';
+import 'package:digital_bank/data/models/transaction_model.dart';
+import 'package:digital_bank/data/models/user_model.dart';
+import 'package:digital_bank/data/models/wallet_model.dart';
+
 class DashboardModel {
       final User user;
         final WalletModel wallet;
@@ -22,4 +27,3 @@ class DashboardModel {
                                                                                       );
                                                                                         }
                                                                                         }
-}
