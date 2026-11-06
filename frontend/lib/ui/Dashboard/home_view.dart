@@ -158,6 +158,26 @@ class HomeView extends StatelessWidget {
                 ],
               ),
             ),
+
+Container(
+              height: MediaQuery.sizeOf(context).height / 6,
+              margin: EdgeInsets.all(6),
+              padding: EdgeInsets.all(6),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      const Icon(Icons.history),
+                      const Text('Transaction History'),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      const Icon(Icons.settings),
+                      const Text('Settings'),
+                    ],
+                  ),
             Container(
               color: const Color.fromARGB(255, 84, 157, 87),
               child: Row(
