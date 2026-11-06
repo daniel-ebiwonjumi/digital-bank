@@ -117,16 +117,27 @@ class HomeView extends StatelessWidget {
                       const Text('Transfer to other bank'),
                     ],
                   ),
-                  Column(
-                    children: [
-                      const Icon(Icons.wallet),
-                      const Text('Add money'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
 
+InkWell(
+  onTap: () {
+    //TODO Navigate to transfer screen
+  },
+  borderRadius: BorderRadius.circular(12),
+  child: Padding(
+    padding: const EdgeInsets.all(4),
+    child: Column(
+      
+      children: [
+        const Icon(Icons.wallet),
+        const SizedBox(height: 8),
+        const Text(
+          'Add money',
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
+  ),
+)
             Container(
                 margin: EdgeInsets.all(6),
               padding: EdgeInsets.all(6),
