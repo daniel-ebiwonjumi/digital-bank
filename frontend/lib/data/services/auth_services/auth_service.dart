@@ -21,7 +21,7 @@ class AuthService {
   }
 
   Future<Response> getCurrentUser() async {
-    return await dioConfig.dio.post(ApiConfig.me);
+    return await dioConfig.dio.get(ApiConfig.me);
   }
 
   Future<Response> logout(String refreshToken) async {

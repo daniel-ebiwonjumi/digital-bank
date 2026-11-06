@@ -20,6 +20,7 @@ class _LoginViewState extends State<LoginView> {
   final _mobileNumberOrEmailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+
   bool _obscurePassword = true;
 
   @override

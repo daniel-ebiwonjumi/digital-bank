@@ -12,5 +12,6 @@ class User {
       mobileNumber: json['mobileNumber'] as String,
       name: json['name'] as String?,
     );
+
   }
 }
