@@ -2,14 +2,14 @@ import "package:digital_bank/ui/cards/cards_view.dart";
 import "package:digital_bank/ui/customer_care/customer_care_view.dart";
 import "package:flutter/material.dart";
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<Dashboard> createState() => _DashboardState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _DashboardState extends State<Dashboard> {
   int currentPageIndex = 0;
   @override
   Widget build(BuildContext context) {
