@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:digital_bank/data/services/dio_config.dart';
 
 class HomeService {
-  final DioCinfig dioConfig;
+  final DioConfig dioConfig;
   const HomeService(this.dioConfig);
 
   Future<Response> getHome () async {

@@ -4,12 +4,12 @@ class HomeRepository {
     final HomeService homeService;
     const HomeRepository(this.homeService);
 
-Future<Home> getHome() async {
+Future<HomeData> getHome() async {
     try {
         final response = await homeService.getHome();
     final data = response.data;
 
-    return Home.fromJson(data('home'));
+    return HomeData.fromJson(data('home'));
 }
 catch(_){
 

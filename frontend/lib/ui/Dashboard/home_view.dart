@@ -137,7 +137,7 @@ InkWell(
       ],
     ),
   ),
-)
+),
             Container(
                 margin: EdgeInsets.all(6),
               padding: EdgeInsets.all(6),
@@ -206,6 +206,9 @@ Container(
           ],
         ),
       ),
-    );
+    
+              ]))])));
+  
   }
-}
+ }
+ 

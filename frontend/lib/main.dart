@@ -2,6 +2,7 @@ import 'package:digital_bank/data/repositories/auth_repository/auth_repository.d
 import 'package:digital_bank/data/services/auth_services/auth_service.dart';
 import 'package:digital_bank/data/services/auth_services/auth_token_storage.dart';
 import 'package:digital_bank/data/services/dio_config.dart';
+import 'package:digital_bank/ui/Dashboard/home_view.dart';
 import 'package:digital_bank/ui/auth/bloc/auth_bloc.dart';
 import 'package:digital_bank/ui/auth/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +22,10 @@ void main() {
     authTokenStorage: authTokenStorage,
   );
 
-
   //Home feature
 
   runApp(
-    MultiBlocProvider(
+    /*  MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
           lazy: false,
@@ -33,7 +33,10 @@ void main() {
               AuthBloc(authRepository)..add(const AuthCheckRequested()),
         ),
       ],
-      child: const DigitalBank(),
+      child: 
+      const DigitalBank(),
     ),
-  );
+  ); */
+
+  MaterialApp(home: const HomeView()));
 }
