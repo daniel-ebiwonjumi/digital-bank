@@ -38,5 +38,5 @@ void main() {
     ),
   ); */
 
-  MaterialApp(home: const HomeView()));
+  MaterialApp(home: const Dashboard()));
 }
