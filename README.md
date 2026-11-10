@@ -1,188 +1,272 @@
-[WIP] Digital Banking Application
+# Digital Banking Application
 
-A mobile-first digital banking application built with Flutter, Dart, NestJS, TypeScript, and PostgreSQL.
+![Status](https://img.shields.io/badge/status-work%20in%20progress-orange)
+![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?logo=nestjs&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-Status: In development
+A mobile-first digital banking and wallet application built with Flutter, Dart, NestJS, TypeScript and PostgreSQL.
 
-TABLE OF CONTENTS
+> **Status:** In active development. Features are marked as implemented only when the corresponding code exists.
 
-Overview
-Features
-Technology Stack
-System Architecture
-Architectural Decisions
-Security and Authentication
-Database Design
-API Design
-Testing
-Current Status and Future Work
-License
-Disclaimer
+## Table of Contents
 
-OVERVIEW
+- [Overview](#overview)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [System Architecture](#system-architecture)
+- [Architectural Decisions](#architectural-decisions)
+- [Security and Authentication](#security-and-authentication)
+- [Financial Transaction Integrity](#financial-transaction-integrity)
+- [Database Design](#database-design)
+- [API Design](#api-design)
+- [Testing](#testing)
+- [Getting Started](#getting-started)
+- [Current Status and Future Work](#current-status-and-future-work)
+- [License](#license)
+- [Disclaimer](#disclaimer)
 
-A digital banking and wallet application designed to explore secure authentication, modular backend architecture, relational data modeling, and reliable financial transaction processing.
+## Overview
 
-The application uses Flutter for the mobile client and NestJS for the backend, with PostgreSQL as the persistent data store. The architecture emphasizes separation of concerns, explicit business rules, and data integrity.
+This project explores secure authentication, modular backend architecture, relational data modeling and reliable financial transaction processing.
 
-The project prioritizes not only feature development but also the engineering principles required to build maintainable software that handles sensitive user information and financial operations.
+Flutter powers the mobile client, NestJS powers the backend, and PostgreSQL is the persistent data store. The architecture emphasizes separation of concerns, explicit business rules and data integrity.
 
-TECHNOLOGY STACK
+The goal is not only to ship features but also to apply the engineering principles needed to build maintainable software that handles sensitive user information and financial operations.
 
-Mobile and web -  Flutter, Dart
-State management - BLoC
-Mobile architecture - Model-View-ViewModel (MVVM)
-Backend -  NestJS, TypeScript
-HTTP platform - Fastify
-Database - PostgreSQL
-Object Relational Mapper - Drizzle ORM
-Authentication - Passport strategies, JWT
-Password hashing - Argon2
+[Back to top](#digital-banking-application)
 
+## Features
 
-SYSTEM ARCHITECTURE 
+| # | Feature | Description | Status |
+|---|---------|-------------|--------|
+| 1 | Authentication | Mobile-number sign-up and login with Argon2-hashed passwords and JWT sessions | Client built, API planned |
+| 2 | Home dashboard | Personalized overview with wallet balance, transaction history and quick actions | In progress |
+| 3 | Card management | Manage payment cards linked to the account | Planned |
+| 4 | Customer care | In-app access to customer support | Planned |
+| 5 | Notifications | Account and transaction alerts | Planned |
+| 6 | Wallet balance management | Add money to the wallet and track the balance | Planned |
+| 7 | Bank transfers | Send money with atomic, idempotent processing | Planned |
+| 8 | Airtime purchases | Buy airtime directly from the wallet | Planned |
+| 9 | Loan applications | Apply for and track loans | Planned |
+| 10 | Transaction history | Browse past transactions with their statuses | Planned |
+| 11 | Monthly financial insights | Monthly summaries of spending and activity | Planned |
+| 12 | Account settings | Manage profile and security preferences | Planned |
 
-Flutter UI (View)
-        |
-ViewModel (MVVM)
-        |
-BLoC (Event → State)
-        |
-Repository / API Client
-        |
-        | HTTP / JSON
-        |
-NestJS Controllers
-        |
-Guards / Pipes
-        |
-NestJS Services (Business Logic)
-        |
-Drizzle ORM
-        |
-PostgreSQL Database
+The status column reflects what the code supports today and is updated as features are completed.
 
-This illustrates the intended architecture.
+[Back to top](#digital-banking-application)
 
-ARCHITECTURAL RESPONSIBILITIES 
+## Technology Stack
 
-- Presentation: Flutter views render application state and collect user input.
-- State management: BLoC coordinates user events, asynchronous operations, and UI state transitions.
-- Presentation logic: ViewModels expose presentation-ready state and coordinate interactions between views and application services.
-- Backend: NestJS handles request validation, authentication, authorization, and business logic.
-- Persistence: Drizzle ORM provides typed database access, while PostgreSQL enforces relational constraints and transactional guarantees.
+| Layer | Technology |
+|-------|------------|
+| Mobile client | Flutter, Dart |
+| State management | BLoC |
+| Mobile architecture | MVVM, modular structure, repository and service layers |
+| Navigation | go_router |
+| HTTP client | Dio |
+| Backend | NestJS, TypeScript |
+| HTTP platform | Fastify |
+| Database | PostgreSQL |
+| ORM | Drizzle ORM |
+| Authentication | Passport strategies, JWT |
+| Password hashing | Argon2 |
+| Version control | Git |
 
-ARCHITECTURAL DECISION 
+[Back to top](#digital-banking-application)
 
-1. MVVM and Separation of Concerns
+## System Architecture
 
-The mobile application follows the Model–View–ViewModel (MVVM) architectural pattern.
+The diagram below shows the intended architecture.
 
-- Model: Represents application data and domain concepts.
-- View: Displays state and forwards user interactions.
-- ViewModel: Coordinates presentation logic and exposes state for the view to render.
+```mermaid
+flowchart TD
+    A["Flutter UI (View)"] --> B["ViewModel (MVVM)"]
+    B --> C["BLoC (Event to State)"]
+    C --> D["Repository and Service Layer / API Client"]
+    D -->|"HTTP / JSON"| E["NestJS Controllers"]
+    E --> F["Guards and Pipes"]
+    F --> G["NestJS Services (Business Logic)"]
+    G --> H["Drizzle ORM"]
+    H --> I[("PostgreSQL")]
+```
 
-MVVM prevents presentation code from becoming tightly coupled to application logic. This improves testability, maintainability, and the ability to evolve the UI independently of data-access and business concerns.
+### Architectural Responsibilities
 
-The architecture also establishes clear responsibilities between the UI, state management, and data-access layers. BLoC and MVVM serve complementary purposes: MVVM defines architectural responsibilities, while BLoC structures event-driven state transitions.
+| Layer | Responsibility |
+|-------|----------------|
+| Presentation (View) | Renders application state and collects user input |
+| Presentation logic (ViewModel) | Exposes presentation-ready state and coordinates interactions between views and application services |
+| State management (BLoC) | Coordinates user events, asynchronous operations and UI state transitions |
+| Data access (Repository and services) | Calls the backend through Dio and hides API details from the rest of the app |
+| Backend (NestJS) | Handles request validation, authentication, authorization and business logic |
+| Persistence (Drizzle and PostgreSQL) | Drizzle provides typed database access; PostgreSQL enforces relational constraints and transactional guarantees |
 
-2. BLoC for Predictable State Management
+[Back to top](#digital-banking-application)
 
-BLoC is chosen over more permissive state-management approaches because it encourages explicit event-to-state transitions and clear separation between presentation and application logic.
+## Architectural Decisions
 
-Instead of allowing UI components to mutate state arbitrarily, BLoC organizes state changes around events and emitted states. This makes asynchronous workflows, such as authentication and wallet retrieval, easier to reason about and test.
+### 1. MVVM and Separation of Concerns
 
-Explicit states also support consistent handling of loading, success, empty, and failure conditions. The resulting behavior is more predictable, particularly as application workflows become more complex.
+The mobile app follows the Model-View-ViewModel pattern.
 
-The key advantage is architectural discipline and testability, not an assertion that BLoC is universally superior or faster than alternatives.
+- **Model:** application data and domain concepts.
+- **View:** displays state and forwards user interactions.
+- **ViewModel:** coordinates presentation logic and exposes state for the view to render.
 
-3. NestJS and Modular Backend Design
+MVVM keeps presentation code from becoming tightly coupled to application logic, which improves testability and maintainability and lets the UI evolve independently of data-access and business concerns. MVVM defines the architectural responsibilities, while BLoC structures the event-driven state transitions inside them.
 
-NestJS provides a modular backend architecture with dependency injection and clearly defined component responsibilities.
+### 2. BLoC for Predictable State Management
 
-Controllers handle HTTP interactions, services encapsulate application logic, and dedicated data-access components manage persistence. This separation supports independent testing and reduces coupling as functionality expands across authentication, users, wallets, and transfers.
+BLoC is chosen over more permissive state-management approaches because it enforces explicit event-to-state transitions and a clear separation between presentation and application logic.
 
-Fastify is selected as the HTTP platform, separating request handling from the application's core business logic.
+Instead of letting UI components mutate state arbitrarily, state changes are organized around events and emitted states. This makes asynchronous workflows such as authentication and wallet retrieval easier to reason about and test, and it supports consistent handling of loading, success, empty and failure states.
 
-4. Drizzle ORM and PostgreSQL
+The advantage is architectural discipline and testability, not a claim that BLoC is universally better or faster than alternatives.
 
-Drizzle ORM is selected for its TypeScript-oriented schema definitions, explicit query construction, and close alignment with SQL.
+### 3. NestJS and Modular Backend Design
 
-Compared with Prisma's more abstract query API and TypeORM's entity-oriented abstraction, Drizzle offers a relatively thin layer over SQL. This can make query behavior easier to inspect, reduce abstraction overhead, and provide greater control over database operations.
+NestJS provides a modular architecture with dependency injection and clearly defined component responsibilities. Controllers handle HTTP interactions, services encapsulate business logic, and dedicated data-access components manage persistence. This keeps coupling low as functionality grows across authentication, users, wallets and transfers.
 
-Its lightweight approach can be advantageous for latency-sensitive endpoints and complex relational queries because developers can reason more directly about the SQL being executed.
+Fastify is the HTTP platform, keeping request handling separate from the core business logic.
 
-However, actual performance also depends on query design, generated SQL, database indexes, connection management, data volume, and workload. 
+### 4. Drizzle ORM and PostgreSQL
 
-PostgreSQL remains responsible for enforcing database constraints and providing transaction guarantees. Using an ORM does not eliminate the need to understand SQL, isolation levels, locking, or concurrency.
+Drizzle ORM is chosen for its TypeScript-first schema definitions, explicit query construction and close alignment with SQL.
 
-SECURITY AND AUTHENTICATION
+Compared with Prisma's more abstract query API and TypeORM's entity-oriented approach, Drizzle is a thin layer over SQL. That makes query behavior easier to inspect and gives more control over database operations, which suits latency-sensitive endpoints and complex relational queries.
+
+Actual performance still depends on query design, indexes, connection management, data volume and workload. PostgreSQL remains responsible for constraints and transaction guarantees, and using an ORM does not remove the need to understand SQL, isolation levels, locking and concurrency.
+
+[Back to top](#digital-banking-application)
+
+## Security and Authentication
 
 The application is designed around server-enforced security boundaries.
 
-- Authentication: Mobile-number-based credential verification using a password-hashing mechanism such as Argon2.
-- Authorization: Protected endpoints verify that authenticated users are permitted to access the requested resources.
-- Token management: JWT-based authentication with explicit consideration of expiration, refresh, and revocation.
-- Input validation: Server-side validation and enforcement of business rules; client-side validation is for usability, not security.
-- Sensitive data: Password hashes, tokens, and secrets must not be exposed in API responses, logs, or version control.
-- Account protection: Future improvements include session invalidation and risk-based checks for suspicious activity.
+- **Authentication:** mobile-number-based credential verification with Argon2 password hashing.
+- **Authorization:** protected endpoints verify that the authenticated user may access the requested resource.
+- **Token management:** JWT-based authentication, with explicit handling of expiration, refresh and revocation.
+- **Input validation:** the server validates all input and enforces business rules; client-side validation is for usability, not security.
+- **Sensitive data:** password hashes, tokens and secrets must never appear in API responses, logs or version control.
+- **Account protection (planned):** session invalidation and risk-based checks for suspicious activity.
 
-A valid token establishes an authenticated identity; it does not automatically authorize access to every resource. Resource ownership and permissions must be checked independently.
+A valid token establishes an authenticated identity. It does not authorize access to every resource, so ownership and permissions are checked independently.
 
-FINANCIAL TRANSACTION INTEGRITY
+[Back to top](#digital-banking-application)
 
-Financial operations require stronger guarantees than ordinary CRUD workflows. The transfer implementation will be designed around the following invariants:
+## Financial Transaction Integrity
 
-- Atomicity: Related debit and credit operations must succeed or fail together.
-- Concurrency control: Simultaneous transfers must not bypass balance checks or violate wallet-balance invariants.
-- Insufficient-funds protection: Balance validation must remain correct under concurrent requests.
-- Idempotency: Retried requests must not unintentionally execute the same transfer multiple times.
-- Persistent transaction records: Operations must be traceable through appropriate transaction states and associated records.
-- Precision: Monetary values must use integer minor units or an appropriate exact-decimal representation rather than binary floating-point arithmetic.
+Financial operations need stronger guarantees than ordinary CRUD workflows. The transfer implementation is designed around these invariants:
 
-PostgreSQL transactions, appropriate locking or conditional updates, database constraints, and application-level business rules will be used where necessary to preserve consistency.
+| Invariant | Goal | Planned approach |
+|-----------|------|------------------|
+| Atomicity | Related debit and credit operations succeed or fail together | A single PostgreSQL transaction per transfer |
+| Concurrency control | Simultaneous transfers cannot bypass balance checks | Row-level locking or conditional updates |
+| Insufficient-funds protection | Balance validation stays correct under concurrent requests | Balance checks enforced in the database, backed by constraints |
+| Idempotency | A retried request does not execute the same transfer twice | Client-supplied idempotency keys enforced by a unique constraint |
+| Traceability | Every operation can be traced | Persistent transaction records with explicit statuses |
+| Precision | No floating-point rounding errors | Integer minor units or exact-decimal values, never binary floating point |
 
-DATABASE DESIGN 
+[Back to top](#digital-banking-application)
 
-PostgreSQL provides relational storage for the application's core entities.
+## Database Design
 
-- Users: Identity information, unique mobile numbers, optional email addresses, password hashes, verification status, and timestamps.
-- Wallets: Ownership, currency, and monetary balances.
-- Transactions: Transfer amounts, associated wallets, operation status, and timestamps.
+PostgreSQL stores the application's core entities.
 
-Drizzle ORM provides typed schema definitions and database queries. Database constraints complement application validation by enforcing critical integrity rules at the persistence layer.
+| Entity | Contents |
+|--------|----------|
+| Users | Identity information, unique mobile number, optional email, password hash, verification status, timestamps |
+| Wallets | Owner, currency, monetary balance |
+| Transactions | Transfer amount, associated wallets, operation status, timestamps |
 
-The final schema will define the precise relationships and constraints required by the implemented workflows.
+Drizzle ORM provides typed schema definitions and queries, while database constraints enforce critical integrity rules at the persistence layer on top of application validation. The final schema will define the exact relationships and constraints required by the implemented workflows.
 
-API DESIGN 
+[Back to top](#digital-banking-application)
 
-The NestJS backend exposes an HTTP API consumed by the Flutter client.
+## API Design
 
-The API is organized around distinct application responsibilities, with controllers handling requests and services implementing business operations.
+The NestJS backend exposes a REST API consumed by the Flutter client. It is organized into modules with distinct responsibilities, with controllers handling requests and services implementing business operations.
 
-All sensitive operations are validated and authorized on the backend. API endpoints must not rely on client-supplied balances, identities, or security decisions.
+| Module | Responsibility |
+|--------|----------------|
+| Auth | Registration, login, token issuance and refresh |
+| Users | User profile and account data |
+| Wallets | Wallet balances and wallet-related data |
+| Transfers | Money transfers and transaction records |
 
-TESTING STRATEGY
+All sensitive operations are validated and authorized on the backend. Endpoints never rely on client-supplied balances, identities or security decisions.
 
-Testing will focus on application correctness and security boundaries:
+[Back to top](#digital-banking-application)
 
-- Unit tests: Validate services, business rules, and state transitions.
-- Integration tests: Verify database interactions, constraints, and transaction behavior.
-- API tests: Exercise validation, authentication, authorization, and error handling.
-- Financial workflow tests: Verify insufficient-funds protection, atomicity, concurrent operations, and idempotency.
+## Testing
 
-Tests should cover failure scenarios as well as successful requests. In particular, financial invariants must be verified against the actual database behavior rather than inferred from application code alone.
+Testing focuses on application correctness and security boundaries.
 
-CURRENT STATUS AND FUTURE WORK
+| Type | Scope |
+|------|-------|
+| Unit tests | Services, business rules and state transitions |
+| Integration tests | Database interactions, constraints and transaction behavior |
+| API tests | Validation, authentication, authorization and error handling |
+| Financial workflow tests | Insufficient-funds protection, atomicity, concurrent operations and idempotency |
 
-The project is under active development. Planned milestones include completing authentication, implementing wallet and transfer workflows, strengthening session management, expanding automated test coverage, and introducing monitoring and suspicious-activity detection.
+Tests cover failure scenarios as well as successful requests. Financial invariants are verified against real database behavior rather than inferred from application code alone.
 
-Features will be marked as implemented only when supported by the corresponding code and, where appropriate, automated tests.
+[Back to top](#digital-banking-application)
 
-LICENSE 
+## Getting Started
 
-This project is licensed under the MIT License. See the license.md file for details.
+### Prerequisites
 
-DISCLAIMER
+- Flutter SDK
+- Node.js and npm
+- PostgreSQL
 
-Although this project is being designed and developed with production-grade software engineering principles in mind, it is not intended for use as a live financial service. It must not be used to store real funds or process real financial transactions.
+### Run the mobile app
+
+```bash
+flutter pub get
+flutter run
+```
+
+### Run the backend
+
+The backend setup below is a template and will be finalized once the API is implemented.
+
+```bash
+npm install
+cp .env.example .env   # set DATABASE_URL, JWT secrets and other values
+npx drizzle-kit migrate
+npm run start:dev
+```
+
+Never commit `.env` files or secrets to version control.
+
+[Back to top](#digital-banking-application)
+
+## Current Status and Future Work
+
+- [x] Authentication (Flutter client)
+- [ ] Home dashboard (in progress)
+- [ ] NestJS backend and API integration
+- [ ] Wallet and transfer workflows
+- [ ] Remaining core features (cards, notifications, airtime, loans, insights, settings)
+- [ ] Stronger session management
+- [ ] Expanded automated test coverage
+- [ ] Monitoring and suspicious-activity detection
+
+[Back to top](#digital-banking-application)
+
+## License
+
+This project is licensed under the MIT License. See [license.md](license.md) for details.
+
+[Back to top](#digital-banking-application)
+
+## Disclaimer
+
+> This project is built with production-grade engineering principles in mind, but it is **not** a live financial service. It must not be used to store real funds or process real financial transactions.
+
+[Back to top](#digital-banking-application)
