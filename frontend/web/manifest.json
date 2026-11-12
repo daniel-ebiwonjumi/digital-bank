@@ -1,6 +1,6 @@
 {
-    "name": "social_and_recommendation_system",
-    "short_name": "social_and_recommendation_system",
+    "name": "digital_bank",
+    "short_name": "digital_bank",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

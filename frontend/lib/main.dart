@@ -38,5 +38,27 @@ void main() {
     ),
   ); */
 
-  MaterialApp(home: const Dashboard()));
+  MaterialApp(
+    debugShowCheckedModeBanner: false,
+     theme: ThemeData(
+        useMaterial3: true,
+        // Sets the default size for standard Icon widgets across the app
+        iconTheme: const IconThemeData(
+          size: 40.0, 
+          color: Colors.blue,
+        ),
+         textTheme: const TextTheme(
+          // Default style for standard Text('Hello') widgets
+          bodyMedium: TextStyle(fontSize: 20.0),
+          // Larger body copy
+          bodyLarge: TextStyle(fontSize: 18.0),
+          // Titles and headings
+          titleLarge: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+          headlineMedium: TextStyle(fontSize: 28.0),
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+      iconTheme:   WidgetStateProperty.all(
+      const IconThemeData(size: 40.0),)),),
+
+      home: const Dashboard()));
 }

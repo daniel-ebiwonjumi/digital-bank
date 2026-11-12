@@ -20,11 +20,11 @@ class _DashboardState extends State<Dashboard> {
             currentPageIndex = index;
           });
         },
-        indicatorColor: const Color.fromARGB(255, 144, 213, 146),
+        indicatorColor: Colors.blueGrey,
         destinations: const <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(Icons.home),
             label: 'Home',
           ),
           NavigationDestination(
@@ -63,7 +63,8 @@ class HomeView extends StatelessWidget {
                 children: [
                   const Icon(Icons.account_circle),
                   const Text('Hi, user\'s name'),
-                  const Expanded(child: Icon(Icons.notifications)),
+                  const Spacer(),
+                  const Icon(Icons.notifications),
                   const Icon(Icons.help_center),
                 ],
               ),
@@ -81,6 +82,7 @@ class HomeView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -97,7 +99,7 @@ class HomeView extends StatelessWidget {
                         const Text('Account Number: 8101435550'),
                       ],
                     ),
-                    Expanded(child: Icon(Icons.notifications)),
+                  
                   ],
                 ),
               ),
