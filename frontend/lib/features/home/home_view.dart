@@ -43,11 +43,7 @@ class _DashboardState extends State<Dashboard> {
       body: [
         IndexedStack(
           index: currentPageIndex,
-          children: const [
-            HomeView(),
-            CardsView(),
-            CustomerCareView(),
-          ],
+          children: const [HomeView(), CardsView(), CustomerCareView()],
         ),
       ][currentPageIndex],
     );
@@ -64,12 +60,12 @@ class HomeView extends StatelessWidget {
         child: Column(
           children: [
             Row(
-              children: [
-                const Icon(Icons.account_circle),
-                const Text('Hi, user\'s name'),
-                const Spacer(),
-                const Icon(Icons.notifications),
-                const Icon(Icons.help_center),
+              children: const [
+                Icon(Icons.account_circle),
+                Text('Hi, user\'s name'),
+                Spacer(),
+                Icon(Icons.notifications),
+                Icon(Icons.help_center),
               ],
             ),
 
