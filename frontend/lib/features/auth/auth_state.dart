@@ -1,5 +1,6 @@
+import "package:digital_bank/features/auth/user.dart";
 import "package:equatable/equatable.dart";
-import "package:digital_bank/data/repositories/user.dart";
+
 
 enum AuthStatus {
 loading,

@@ -1,6 +1,7 @@
-import 'package:digital_bank/data/services/dio_config.dart';
+import 'package:digital_bank/core/api_config.dart';
+import 'package:digital_bank/core/dio_config.dart';
 import 'package:dio/dio.dart';
-import '../api_config.dart';
+
 
 class AuthService {
   final DioConfig dioConfig;

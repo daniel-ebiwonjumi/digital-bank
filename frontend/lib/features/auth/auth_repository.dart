@@ -1,7 +1,7 @@
+import 'package:digital_bank/features/auth/auth_service.dart';
+import 'package:digital_bank/features/auth/auth_token_storage.dart';
+import 'package:digital_bank/features/auth/user.dart';
 import 'package:dio/dio.dart';
-import 'package:digital_bank/data/repositories/user.dart';
-import 'package:digital_bank/data/services/auth_services/auth_service.dart';
-import 'package:digital_bank/data/services/auth_services/auth_token_storage.dart';
 
 class AuthRepository {
   final AuthService authService;

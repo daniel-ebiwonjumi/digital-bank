@@ -1,9 +1,7 @@
-import 'package:digital_bank/ui/auth/bloc/auth_bloc.dart';
-import 'package:digital_bank/ui/auth/bloc/auth_event.dart';
+import 'package:digital_bank/features/auth/auth_bloc.dart';
+import 'package:digital_bank/features/auth/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:digital_bank/app/app_router.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});

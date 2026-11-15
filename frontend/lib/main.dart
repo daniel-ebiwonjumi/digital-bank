@@ -1,10 +1,9 @@
-import 'package:digital_bank/data/repositories/auth_repository/auth_repository.dart';
-import 'package:digital_bank/data/services/auth_services/auth_service.dart';
-import 'package:digital_bank/data/services/auth_services/auth_token_storage.dart';
-import 'package:digital_bank/data/services/dio_config.dart';
-import 'package:digital_bank/ui/Dashboard/home_view.dart';
-import 'package:digital_bank/ui/auth/bloc/auth_bloc.dart';
-import 'package:digital_bank/ui/auth/bloc/auth_event.dart';
+import 'package:digital_bank/core/dio_config.dart';
+import 'package:digital_bank/features/auth/auth_bloc.dart';
+import 'package:digital_bank/features/auth/auth_event.dart';
+import 'package:digital_bank/features/auth/auth_repository.dart';
+import 'package:digital_bank/features/auth/auth_service.dart';
+import 'package:digital_bank/features/auth/auth_token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:digital_bank/app/app.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

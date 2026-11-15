@@ -1,5 +1,5 @@
-import "package:digital_bank/ui/cards/cards_view.dart";
-import "package:digital_bank/ui/customer_care/customer_care_view.dart";
+import "package:digital_bank/features/cards/cards_view.dart";
+import "package:digital_bank/features/customer_care/customer_care_view.dart";
 import "package:flutter/material.dart";
 
 class Dashboard extends StatefulWidget {

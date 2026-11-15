@@ -1,6 +1,6 @@
-import 'package:digital_bank/data/repositories/auth_repository/auth_repository.dart';
-import 'package:digital_bank/ui/auth/bloc/auth_event.dart';
-import 'package:digital_bank/ui/auth/bloc/auth_state.dart';
+import 'package:digital_bank/features/auth/auth_event.dart';
+import 'package:digital_bank/features/auth/auth_repository.dart';
+import 'package:digital_bank/features/auth/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
