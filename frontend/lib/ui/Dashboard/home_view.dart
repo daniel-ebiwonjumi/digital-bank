@@ -15,16 +15,17 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: NavigationBar(
+        selectedIndex: currentPageIndex,
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
           });
         },
-        indicatorColor: Colors.blueGrey,
+        indicatorColor: const Color.fromARGB(255, 165, 179, 190),
         destinations: const <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
             label: 'Home',
           ),
           NavigationDestination(
@@ -34,15 +35,20 @@ class _DashboardState extends State<Dashboard> {
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.support_agent),
-            icon: Icon(Icons.atm_outlined),
+            icon: Icon(Icons.support_agent_outlined),
             label: 'Customer Care',
           ),
         ],
       ),
-      body: <Widget>[
-        HomeView(),
-        CardsView(),
-        CustomerCareView(),
+      body: [
+        IndexedStack(
+          index: currentPageIndex,
+          children: const [
+            HomeView(),
+            CardsView(),
+            CustomerCareView(),
+          ],
+        ),
       ][currentPageIndex],
     );
   }
@@ -53,163 +59,142 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.account_circle),
-                  const Text('Hi, user\'s name'),
-                  const Spacer(),
-                  const Icon(Icons.notifications),
-                  const Icon(Icons.help_center),
-                ],
-              ),
-
-              Container(
-                height: MediaQuery.sizeOf(context).height / 5,
-                width: double.infinity,
-
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.lightGreen,
-                ),
-                margin: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.verified_user_outlined),
-                            const Text('Available'),
-                            const Icon(Icons.visibility),
-                          ],
-                        ),
-                        //TODO: remove the hard coded balance
-                        //TODO: and use the balance from the backend later
-                        const Text('₦3000.50', style: TextStyle(fontSize: 32)),
-                        //TODO: Use the account number from the backend
-                        const Text('Account Number: 8101435550'),
-                      ],
-                    ),
-                  
-                  ],
-                ),
-              ),
-
-              Container(
-                height: MediaQuery.sizeOf(context).height / 6,
-                margin: EdgeInsets.all(6),
-                padding: EdgeInsets.all(6),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        const Icon(Icons.person_pin),
-                        const Text('Transfer to same bank'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        const Icon(Icons.account_balance),
-                        const Text('Transfer to other bank'),
-                      ],
-                    ),
-
-                    InkWell(
-                      onTap: () {
-                        //TODO Navigate to transfer screen
-                      },
-                      borderRadius: BorderRadius.circular(12),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Column(
-                          children: [
-                            const Icon(Icons.wallet),
-                            const SizedBox(height: 8),
-                            const Text(
-                              'Add money',
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              Container(
-                margin: EdgeInsets.all(6),
-                padding: EdgeInsets.all(6),
-                height: MediaQuery.sizeOf(context).height / 6,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            const Icon(Icons.network_cell),
-                            const Text('Buy Airtime'),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            const Icon(Icons.savings),
-                            const Text('Get Loan'),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            const Icon(Icons.online_prediction),
-                            const Text('Check monthly insight'),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            
-
-          Container(
-            height: MediaQuery.sizeOf(context).height / 6,
-            margin: EdgeInsets.all(6),
-            padding: EdgeInsets.all(6),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
               children: [
-                Column(
-                  children: [
-                    const Icon(Icons.history),
-                    const Text('Transaction History'),
-                  ],
-                ),
-                Column(
-                  children: [
-                    const Icon(Icons.settings),
-                    const Text('Settings'),
-                  ],
-
-                ),
-                SizedBox()
-              
-                
+                const Icon(Icons.account_circle),
+                const Text('Hi, user\'s name'),
+                const Spacer(),
+                const Icon(Icons.notifications),
+                const Icon(Icons.help_center),
               ],
             ),
-          ),
-            ] 
+
+            Container(
+              width: double.infinity,
+
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.blue,
+              ),
+              margin: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.verified_user_outlined,
+                            color: Colors.black,
+                          ),
+                          SizedBox(width: 5),
+                          const Text('Available'),
+                          SizedBox(width: 5),
+                          const Icon(Icons.visibility, color: Colors.black),
+                        ],
+                      ),
+
+                      //TODO: remove the hard coded balance
+                      //TODO: and use the balance from the backend later
+                      const Text('₦3000.50', style: TextStyle(fontSize: 32)),
+                      //TODO: Use the account number from the backend
+                      const Text('Account Number: 8101435550'),
+                    ],
+                  ),
+                  Icon(Icons.notifications),
+                ],
+              ),
+            ),
+
+            GridView.count(
+              crossAxisCount: 3,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                QuickAction(
+                  icon: Icons.person_pin,
+                  label: 'Transfer to same bank',
+                  onTap: () {},
+                ),
+                QuickAction(
+                  icon: Icons.account_balance,
+                  label: 'Transfer to other bank',
+                  onTap: () {},
+                ),
+                QuickAction(
+                  icon: Icons.wallet,
+                  label: 'Add money',
+                  onTap: () {},
+                ),
+                QuickAction(
+                  icon: Icons.network_cell,
+                  label: 'Buy Airtime',
+                  onTap: () {},
+                ),
+                QuickAction(
+                  icon: Icons.savings,
+                  label: 'Get Loan',
+                  onTap: () {},
+                ),
+                QuickAction(
+                  icon: Icons.online_prediction,
+                  label: 'Monthly insight',
+                  onTap: () {},
+                ),
+                QuickAction(
+                  icon: Icons.history,
+                  label: 'Transaction History',
+                  onTap: () {},
+                ),
+                QuickAction(
+                  icon: Icons.settings,
+                  label: 'Settings',
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ],
         ),
       ),
-    ));
+    );
+  }
+}
+
+class QuickAction extends StatelessWidget {
+  const QuickAction({
+    super.key,
+    required this.icon,
+    required this.label,
+    this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon),
+            const SizedBox(height: 8),
+            Text(label, textAlign: TextAlign.center),
+          ],
+        ),
+      ),
+    );
   }
 }
