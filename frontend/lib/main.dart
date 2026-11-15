@@ -25,7 +25,7 @@ void main() {
   //Home feature
 
   runApp(
-    /*  MultiBlocProvider(
+      MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
           lazy: false,
@@ -33,12 +33,14 @@ void main() {
               AuthBloc(authRepository)..add(const AuthCheckRequested()),
         ),
       ],
+
+    
       child: 
       const DigitalBank(),
     ),
-  ); */
+  ); 
 
-  MaterialApp(
+ /* MaterialApp(
     debugShowCheckedModeBanner: false,
      theme: ThemeData(
         useMaterial3: true,
@@ -60,5 +62,7 @@ void main() {
       iconTheme:   WidgetStateProperty.all(
       const IconThemeData(size: 40.0),)),),
 
+  
       home: const Dashboard()));
+      */
 }
