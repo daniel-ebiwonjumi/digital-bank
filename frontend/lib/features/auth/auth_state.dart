@@ -1,11 +1,13 @@
-import "package:digital_bank/features/auth/user.dart";
-import "package:equatable/equatable.dart";
-
+import 'package:digital_bank/features/auth/user.dart';
+import 'package:equatable/equatable.dart';
 
 enum AuthStatus {
-loading,
+  authInitial,
+authLoading,
+authFailure,
 authenticated,
 unauthenticated,
+
 }
 
 class AuthState extends Equatable {
@@ -13,7 +15,7 @@ final AuthStatus status;
 final User? user;
 final String? error;
 
-const AuthState({this.status = AuthStatus.loading, this.user, this.error});
+const AuthState({this.status = AuthStatus.authInitial, this.user, this.error});
 
 bool get isAuthenticated => status == AuthStatus.authenticated;
 
