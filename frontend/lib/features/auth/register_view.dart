@@ -51,7 +51,7 @@ class LoginViewState extends State<RegisterView> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Text(
-                    'Welcome',
+                    'Create a bank account',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
@@ -98,13 +98,20 @@ class LoginViewState extends State<RegisterView> {
                   ),
 
                   const SizedBox(height: 24),
-                  SizedBox(
+
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state){
+                      final isLoading = state is AuthLoading; 
+                      return SizedBox(
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: _register,
-                      child: const Text('register'),
+                      onPressed: isLoading ? null : _register,
+                      child: isLoading ? const CircularProgressIndicator(
+                        strokeWidth: 2
+                      ) : const Text('register'),
                     ),
-                  ),
+                  );
+  })
 
                   const SizedBox(height: 10),
 

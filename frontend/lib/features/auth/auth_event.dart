@@ -7,9 +7,10 @@ const AuthEvent();
 List<Object?> get props => [];
  }
 
-final class AuthCheckRequested extends AuthEvent { 
-const AuthCheckRequested();
-}
+ final class AuthCheckRequested extends AuthEvent { 
+    const AuthCheckRequested();
+    }
+ 
 
 final class AuthLoginRequested extends AuthEvent {
 final String mobileNumberOrEmail;

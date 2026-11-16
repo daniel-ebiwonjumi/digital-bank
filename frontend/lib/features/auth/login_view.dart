@@ -46,15 +46,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listenWhen: (previous, current) =>
-          previous.error != current.error && current.error != null,
-      listener: (context, state) {
-        ScaffoldMessenger.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(SnackBar(content: Text(state.error!)));
-      },
-      child: Scaffold(
+    return Scaffold(
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -69,6 +61,7 @@ class _LoginViewState extends State<LoginView> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 30,
+                  
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -122,10 +115,9 @@ class _LoginViewState extends State<LoginView> {
                     const SizedBox(height: 24),
 
                     BlocBuilder<AuthBloc, AuthState>(
-                      buildWhen: (previous, current) =>
-                          previous.status != current.status,
+                    
                       builder: (context, state) {
-                        final isLoading = state.status == AuthStatus.loading;
+                        final isLoading = state is AuthLoading ;
 
                         return SizedBox(
                           height: 50,
@@ -148,10 +140,9 @@ class _LoginViewState extends State<LoginView> {
                     const SizedBox(height: 10),
 
                     BlocBuilder<AuthBloc, AuthState>(
-                      buildWhen: (previous, current) =>
-                          previous.status != current.status,
+              
                       builder: (context, state) {
-                        final isLoading = state.status == AuthStatus.loading;
+                        final isLoading = state is AuthLoading;
 
                         return TextButton(
                           onPressed: isLoading

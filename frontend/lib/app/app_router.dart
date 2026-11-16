@@ -35,20 +35,19 @@ class AppRouter {
       ],
 
       redirect: (context, state) {
-        final status = authBloc.state.status;
+        final status = authBloc.state;
         final currentLoc = state.matchedLocation;
 
-        if (status == AuthStatus.loading) {
+        if (status is AuthLoading) {
           return '/';
         }
-        if (status == AuthStatus.unauthenticated) {
+        if (status is Unauthenticated) {
           if (currentLoc == '/register') return null;
           return currentLoc == '/' ? null : '/';
         }
 
-        if (status == AuthStatus.authenticated) {
+        if (status is Authenticated) {
           if (currentLoc == '/' ||
-              currentLoc == '/' ||
               currentLoc == '/register') {
             return '/home';
           }

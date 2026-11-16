@@ -5,45 +5,39 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository;
-  AuthBloc(this.authRepository) : super(AuthState(status: AuthStatus.loading)) {
-    on<AuthCheckRequested>(_onCheckAuthentication);
+  AuthBloc(this.authRepository) : super(UnknownAuth()) {
+    on<AuthCheckRequested>(_onCheckAuthentication)
     on<AuthLoginRequested>(_onLogin);
     on<AuthRegisterRequested>(_onRegister);
     on<AuthLogoutRequested>(_onLogout);
   }
-
   Future<void> _onCheckAuthentication(
-    AuthCheckRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(const AuthState(status: AuthStatus.loading));
+        AuthCheckRequested event,
+            Emitter<AuthState> emit,
+              ) async {
 
-    try {
-      final user = await authRepository.getCurrentUser();
-      emit(AuthState(status: AuthStatus.authenticated, user: user));
-    } catch (_) {
-      try {
-        await authRepository.logout();
-      } catch (_) {
-        //I need to find out why the logout isn't happening. It might be
-        //because the user is already logged out
-      }
-      emit(AuthState(status: AuthStatus.unauthenticated));
-    }
-  }
+                      try {
+                            final user = await authRepository.getCurrentUser();
+                                  emit(Authenticated(user: user));
+                                      } catch (_) {
+                                            try {
+                                                    await authRepository.logout();
+                                                          } catch (_){}
+                                          emit(Unauthenticated());
+                                         }
+                                      }
 
   Future _onLogin(AuthLoginRequested event, Emitter<AuthState> emit) async {
-    emit(AuthState(status: AuthStatus.loading));
-
+    emit(AuthLoading());
     try {
       final user = await authRepository.login(
         mobileNumberOrEmail: event.mobileNumberOrEmail,
         password: event.password,
       );
-      emit(AuthState(status: AuthStatus.authenticated, user: user));
+      emit(Authenticated(user: user));
     } catch (_) {
       emit(
-        AuthState(status: AuthStatus.unauthenticated, error: 'Unable to login'),
+        Unauthenticated(),
       );
     }
   }
@@ -52,21 +46,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthRegisterRequested event,
     Emitter<AuthState> emit,
   ) async {
-    emit(AuthState(status: AuthStatus.loading));
-
+    emit(AuthLoading());
     try {
       final user = await authRepository.login(
         mobileNumberOrEmail: event.mobileNumber,
         password: event.password,
       );
-      emit(AuthState(status: AuthStatus.authenticated, user: user));
+      emit(Authenticated(user: user));
     } catch (_) {
-      emit(
-        AuthState(
-          status: AuthStatus.unauthenticated,
-          error: 'Unable to Register',
-        ),
-      );
+      emit(Unauthenticated());
     }
   }
 
@@ -74,17 +62,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthLogoutRequested event,
     Emitter<AuthState> emit,
   ) async {
-    emit(AuthState(status: AuthStatus.loading));
+    emit(AuthLoading());
     try {
       await authRepository.logout();
-      emit(AuthState(status: AuthStatus.unauthenticated));
+      emit(Unauthenticated());
     } catch (_) {
-      emit(
-        AuthState(
-          status: AuthStatus.authenticated,
-          error: 'Failed to logout, please try again',
-        ),
-      );
+      emit(Authenticated(user: user));
     }
   }
 }
