@@ -46,7 +46,7 @@ The goal is not only to ship features but also to apply the engineering principl
 | 3 | Card management | Manage payment cards linked to the account | Planned |
 | 4 | Customer care | In-app access to customer support | Planned |
 | 5 | Notifications | Account and transaction alerts | Planned |
-| 6 | Wallet balance management | Add money to the wallet and track the balance | Planned |
+| 6 | Wallet balance management | Add money to the wallet and track the balance | Client built, API Planned |
 | 7 | Bank transfers | Send money with atomic, idempotent processing | Planned |
 | 8 | Airtime purchases | Buy airtime directly from the wallet | Planned |
 | 9 | Loan applications | Apply for and track loans | Planned |
