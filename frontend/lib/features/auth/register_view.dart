@@ -1,5 +1,6 @@
-import 'package:digital_bank/features/auth/auth_bloc.dart';
-import 'package:digital_bank/features/auth/auth_event.dart';
+import 'package:digital_bank/features/auth/bloc/auth_bloc.dart';
+import 'package:digital_bank/features/auth/bloc/auth_event.dart';
+import 'package:digital_bank/features/auth/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -111,7 +112,7 @@ class LoginViewState extends State<RegisterView> {
                       ) : const Text('register'),
                     ),
                   );
-  })
+  }),
 
                   const SizedBox(height: 10),
 

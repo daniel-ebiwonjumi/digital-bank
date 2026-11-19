@@ -1,6 +1,6 @@
-import 'package:digital_bank/features/auth/auth_service.dart';
-import 'package:digital_bank/features/auth/auth_token_storage.dart';
-import 'package:digital_bank/features/auth/user.dart';
+import 'package:digital_bank/features/auth/data/auth_service.dart';
+import 'package:digital_bank/features/auth/data/auth_token_storage.dart';
+import 'package:digital_bank/features/auth/models/user.dart';
 import 'package:dio/dio.dart';
 
 class AuthRepository {
@@ -12,33 +12,43 @@ class AuthRepository {
     required this.authTokenStorage,
   });
 
-  Future<User> login({required String mobileNumberOrEmail, required String password}) async {
+  Future<User> login({
+    required String mobileNumberOrEmail,
+    required String password,
+  }) async {
     try {
       final response = await authService.login(mobileNumberOrEmail, password);
       final data = response.data;
 
+      if (data == null || data is! Map<String, dynamic>) {
+        throw Exception('Invalid respnse from the server');
+      }
+
       await authTokenStorage.saveTokens(
-        accessToken: data['accessToken'],
-        refreshToken: data['refreshToken'],
+        accessToken: data['accessToken'] as String,
+        refreshToken: data['refreshToken'] as String,
       );
 
-      return User.fromJson(data['user']);
+      return User.fromJson(data['user'] as Map<String, dynamic>);
     } on DioException catch (e) {
       throw _handleError(e);
     }
   }
 
-  Future<User> register({required String mobileNumber, required String password}) async {
+  Future<User> register({
+    required String mobileNumber,
+    required String password,
+  }) async {
     try {
       final response = await authService.register(mobileNumber, password);
       final data = response.data;
 
       await authTokenStorage.saveTokens(
-        accessToken: data['accessToken'],
-        refreshToken: data['refreshToken'],
+        accessToken: data['accessToken'] as String,
+        refreshToken: data['refreshToken'] as String,
       );
 
-      return User.fromJson(data['user']);
+      return User.fromJson(data['user'] as Map<String, dynamic>);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -47,7 +57,7 @@ class AuthRepository {
   Future<User> getCurrentUser() async {
     try {
       final response = await authService.getCurrentUser();
-      return User.fromJson(response.data);
+      return User.fromJson(response.data as Map<String, dynamic>);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -60,7 +70,6 @@ class AuthRepository {
         await authService.logout(refreshToken);
       }
     } catch (_) {
-      
     } finally {
       await authTokenStorage.clearTokens();
     }
@@ -72,7 +81,9 @@ class AuthRepository {
       if (refreshToken == null) throw Exception('No refresh token');
 
       final response = await authService.refresh(refreshToken);
-      await authTokenStorage.saveAccessToken(response.data['accessToken']);
+      await authTokenStorage.saveAccessToken(
+        response.data['accessToken'] as String,
+      );
     } on DioException catch (e) {
       await authTokenStorage.clearTokens();
       throw _handleError(e);
@@ -83,19 +94,27 @@ class AuthRepository {
     if (e.response != null) {
       final data = e.response?.data;
       if (data is Map<String, dynamic>) {
-        if (data['message'] is String) return data['message'];
-        if (data['message'] is List) return (data['message'] as List).join(', ');
+        if (data['message'] is String) return data['message'] as String;
+        if (data['message'] is List)
+          return (data['message'] as List).join(', ');
       }
       switch (e.response?.statusCode) {
-        case 400: return 'Invalid request.';
-        case 401: return 'Invalid email or mobile number or password.';
-        case 403: return 'You are not allowed to perform this action.';
-        case 404: return 'Resource not found.';
-        case 429: return 'Too many attempts. Please try again later.';
-        case 500: return 'Server error. Please try again later.';
+        case 400:
+          return 'Invalid request.';
+        case 401:
+          return 'Invalid email or mobile number or password.';
+        case 403:
+          return 'You are not allowed to perform this action.';
+        case 404:
+          return 'Resource not found.';
+        case 429:
+          return 'Too many attempts. Please try again later.';
+        case 500:
+          return 'Server error. Please try again later.';
       }
     }
-    if (e.type == DioExceptionType.connectionTimeout || e.type == DioExceptionType.receiveTimeout) {
+    if (e.type == DioExceptionType.connectionTimeout ||
+        e.type == DioExceptionType.receiveTimeout) {
       return 'Connection timed out.';
     }
     if (e.type == DioExceptionType.connectionError) {

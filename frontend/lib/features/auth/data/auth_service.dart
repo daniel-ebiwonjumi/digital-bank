@@ -1,11 +1,12 @@
 import 'package:digital_bank/core/api_config.dart';
 import 'package:digital_bank/core/dio_config.dart';
+import 'package:digital_bank/features/auth/models/user.dart';
 import 'package:dio/dio.dart';
 
 
 class AuthService {
+  AuthService({required this.dioConfig});
   final DioConfig dioConfig;
-  AuthService(this.dioConfig);
 
   Future<Response> login(String mobileNumberOrEmail, String password) async {
     return await dioConfig.dio.post(

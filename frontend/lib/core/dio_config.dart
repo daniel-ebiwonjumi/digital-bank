@@ -1,5 +1,5 @@
 import 'package:digital_bank/core/api_config.dart';
-import 'package:digital_bank/features/auth/auth_token_storage.dart';
+import 'package:digital_bank/features/auth/data/auth_token_storage.dart';
 import 'package:dio/dio.dart';
 
 class DioConfig {

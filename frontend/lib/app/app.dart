@@ -1,4 +1,4 @@
-import 'package:digital_bank/features/auth/auth_bloc.dart';
+import 'package:digital_bank/features/auth/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:digital_bank/app/app_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

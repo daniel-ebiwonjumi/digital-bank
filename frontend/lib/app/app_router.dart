@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:digital_bank/features/auth/auth_bloc.dart';
-import 'package:digital_bank/features/auth/auth_state.dart';
+import 'package:digital_bank/features/auth/bloc/auth_bloc.dart';
+import 'package:digital_bank/features/auth/bloc/auth_state.dart';
 import 'package:digital_bank/features/auth/login_view.dart';
 import 'package:digital_bank/features/auth/register_view.dart';
 import 'package:flutter/foundation.dart';

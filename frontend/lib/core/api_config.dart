@@ -8,7 +8,5 @@ class ApiConfig {
   static const String me = '/auth/me';
   static const String logout = '/auth/logout';
 
-  //For the Home feature
-  static const String home = '/home';
+  static const String initializeFunding = 'wallet/fund/initialize/:reference';
 }
-
