@@ -4,40 +4,46 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../data/models/funding_models.dart';
-import '../../data/repositories/add_money_repository.dart';
-import '../bloc/add_money_bloc.dart';
-import '../bloc/add_money_event.dart';
-import '../bloc/add_money_state.dart';
+import '../../data/repositories/fund_account_repository.dart';
+import '../bloc/fund_account_bloc.dart';
+import '../bloc/fund_account_event.dart';
+import '../bloc/fund_account_state.dart';
 
-/// Register this path in your router (nested under /add-money).
-const addMoneyCheckoutRoute = '/add-money/checkout';
+/// Register this path in your router (nested under /fund-account).
+const fundAccountCheckoutRoute = '/fund-account/checkout';
 
-const _minimumNaira = 100;
+/// 1000000 -> 1,000,000
+String _formatNaira(double value) {
+  return value.toStringAsFixed(0).replaceAllMapped(
+        RegExp(r'\B(?=(\d{3})+(?!\d))'),
+        (_) => ',',
+      );
+}
 
 /// Pops with `true` when the home screen should refresh its balance
 /// (payment confirmed, or still pending).
-class AddMoneyPage extends StatelessWidget {
-  const AddMoneyPage({super.key});
+class FundAccountPage extends StatelessWidget {
+  const FundAccountPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddMoneyBloc(
-        repository: context.read<AddMoneyRepository>(),
+      create: (context) => FundAccountBloc(
+        repository: context.read<FundAccountRepository>(),
       ),
-      child: const _AddMoneyView(),
+      child: const _FundAccountView(),
     );
   }
 }
 
-class _AddMoneyView extends StatefulWidget {
-  const _AddMoneyView();
+class _FundAccountView extends StatefulWidget {
+  const _FundAccountView();
 
   @override
-  State<_AddMoneyView> createState() => _AddMoneyViewState();
+  State<_FundAccountView> createState() => _FundAccountViewState();
 }
 
-class _AddMoneyViewState extends State<_AddMoneyView> {
+class _FundAccountViewState extends State<_FundAccountView> {
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
   FundingMethod _method = FundingMethod.card;
@@ -48,41 +54,44 @@ class _AddMoneyViewState extends State<_AddMoneyView> {
     super.dispose();
   }
 
-  /// Naira text to integer kobo. Money is never sent as a double.
-  int? _parseKobo(String? text) {
-    final naira = double.tryParse((text ?? '').replaceAll(',', '').trim());
-    if (naira == null) return null;
-    return (naira * 100).round();
+  /// Parses the typed amount in naira. The input formatter already limits it
+  /// to 2 decimal places.
+  double? _parseNaira(String? text) {
+    return double.tryParse((text ?? '').replaceAll(',', '').trim());
   }
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
-    context.read<AddMoneyBloc>().add(
+    FocusScope.of(context).unfocus();
+    context.read<FundAccountBloc>().add(
           FundingSubmitted(
-            amountInKobo: _parseKobo(_amountController.text)!,
+            amountInNaira: _parseNaira(_amountController.text)!,
             method: _method,
           ),
         );
   }
 
-  Future<void> _handleState(BuildContext context, AddMoneyState state) async {
-    final bloc = context.read<AddMoneyBloc>();
+  Future<void> _handleState(
+    BuildContext context,
+    FundAccountState state,
+  ) async {
+    final bloc = context.read<FundAccountBloc>();
 
     switch (state) {
-      case AddMoneyAwaitingPayment(:final session):
+      case FundAccountAwaitingPayment(:final session):
         await context.push<void>(
-          addMoneyCheckoutRoute,
+          fundAccountCheckoutRoute,
           extra: session.authorizationUrl,
         );
         if (!bloc.isClosed) bloc.add(const PaymentWindowClosed());
-      case AddMoneySuccess():
+      case FundAccountSuccess():
         await _showResultDialog(
           context,
           title: 'Payment confirmed',
           message: 'Your wallet has been funded.',
         );
         if (context.mounted) context.pop(true);
-      case AddMoneyPending():
+      case FundAccountPending():
         await _showResultDialog(
           context,
           title: 'Payment processing',
@@ -90,11 +99,13 @@ class _AddMoneyViewState extends State<_AddMoneyView> {
               'Your balance will update once the payment clears.',
         );
         if (context.mounted) context.pop(true);
-      case AddMoneyFailure(:final message):
+      case FundAccountFailure(:final message):
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(SnackBar(content: Text(message)));
-      case AddMoneyInitial() || AddMoneyInitializing() || AddMoneyVerifying():
+      case FundAccountInitial() ||
+            FundAccountInitializing() ||
+            FundAccountVerifying():
         break;
     }
   }
@@ -122,81 +133,94 @@ class _AddMoneyViewState extends State<_AddMoneyView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddMoneyBloc, AddMoneyState>(
+    return BlocConsumer<FundAccountBloc, FundAccountState>(
       listener: _handleState,
       builder: (context, state) {
-        final isInitializing = state is AddMoneyInitializing;
-        final isVerifying = state is AddMoneyVerifying;
+        final isInitializing = state is FundAccountInitializing;
+        final isVerifying = state is FundAccountVerifying;
 
-        return Scaffold(
-          appBar: AppBar(title: const Text('Add money')),
-          body: SafeArea(
-            child: isVerifying
-                ? const _VerifyingView()
-                : Form(
-                    key: _formKey,
-                    child: ListView(
-                      padding: const EdgeInsets.all(20),
-                      children: [
-                        Text(
-                          'Amount',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: 8),
-                        TextFormField(
-                          controller: _amountController,
-                          enabled: !isInitializing,
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true,
+        // The user must not leave while the payment is being confirmed.
+        return PopScope(
+          canPop: !isVerifying,
+          child: Scaffold(
+            appBar: AppBar(title: const Text('Fund account')),
+            body: SafeArea(
+              child: isVerifying
+                  ? const _VerifyingView()
+                  : Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: ListView(
+                        padding: const EdgeInsets.all(20),
+                        children: [
+                          Text(
+                            'Amount',
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d*\.?\d{0,2}'),
-                            ),
-                          ],
-                          decoration: const InputDecoration(
-                            prefixText: '₦ ',
-                            hintText: '0.00',
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            final kobo = _parseKobo(value);
-                            if (kobo == null) return 'Enter an amount';
-                            if (kobo < _minimumNaira * 100) {
-                              return 'Minimum amount is ₦$_minimumNaira';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 24),
-                        Text(
-                          'Payment method',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: 8),
-                        for (final method in FundingMethod.values)
-                          _MethodTile(
-                            method: method,
-                            selected: method == _method,
+                          const SizedBox(height: 8),
+                          TextFormField(
+                            controller: _amountController,
                             enabled: !isInitializing,
-                            onTap: () => setState(() => _method = method),
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            textInputAction: TextInputAction.done,
+                            onFieldSubmitted: (_) => _submit(),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d*\.?\d{0,2}'),
+                              ),
+                              LengthLimitingTextInputFormatter(10),
+                            ],
+                            decoration: const InputDecoration(
+                              prefixText: '₦ ',
+                              hintText: '0.00',
+                              border: OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              final naira = _parseNaira(value);
+                              if (naira == null) return 'Enter an amount';
+                              if (naira < FundingLimits.minimumNaira) {
+                                return 'Minimum amount is '
+                                    '₦${_formatNaira(FundingLimits.minimumNaira)}';
+                              }
+                              if (naira > FundingLimits.maximumNaira) {
+                                return 'Maximum amount is '
+                                    '₦${_formatNaira(FundingLimits.maximumNaira)}';
+                              }
+                              return null;
+                            },
                           ),
-                        const SizedBox(height: 24),
-                        FilledButton(
-                          onPressed: isInitializing ? null : _submit,
-                          child: isInitializing
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Text('Continue'),
-                        ),
-                      ],
+                          const SizedBox(height: 24),
+                          Text(
+                            'Payment method',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 8),
+                          for (final method in FundingMethod.values)
+                            _MethodTile(
+                              method: method,
+                              selected: method == _method,
+                              enabled: !isInitializing,
+                              onTap: () => setState(() => _method = method),
+                            ),
+                          const SizedBox(height: 24),
+                          FilledButton(
+                            onPressed: isInitializing ? null : _submit,
+                            child: isInitializing
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : const Text('Continue'),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+            ),
           ),
         );
       },
