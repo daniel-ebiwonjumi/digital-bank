@@ -1,32 +1,35 @@
-import 'package:digital_bank/core/api_config.dart';
-import 'package:digital_bank/core/dio_config.dart';
-import 'package:digital_bank/features/fund_account/models/fund_account.dart';
+import 'package:dio/dio.dart';
 
+import '../models/funding_models.dart';
 
+/// Raw API calls. No error mapping here; the repository does that.
 class FundAccountService {
-  FundAccountService({required this.dioConfig});
+  const FundAccountService(this._dio);
 
-  final DioConfig dioConfig;
+  final Dio _dio;
 
-  Future<FundingSession?> initializeFunding({
-    required int amount,
+  /// [amountInNaira] is sent as is; the backend converts it to kobo.
+  Future<FundingSession> initialize({
+    required double amountInNaira,
     required FundingMethod method,
   }) async {
-    final response = await dioConfig.dio.post<Map<String, dynamic>>(
-      ApiConfig.initializeFunding,
-      data: {'amount': amount, 'channel': method.apiValue},
+    final response = await _dio.post<Map<String, dynamic>>(
+      '/wallet/fund/initialize',
+      data: {'amount': amountInNaira, 'channel': method.apiValue},
     );
-    final data = response.data;
-    if (data == null) return null;
-    return FundingSession.fronJson(data);
+    return FundingSession.fromJson(_bodyOf(response));
   }
 
-  Future<FundingStatus?> verify({required String reference}) async {
-    final response = await dioConfig.dio.get<Map<String, dynamic>>(
+  Future<FundingStatus> verify(String reference) async {
+    final response = await _dio.get<Map<String, dynamic>>(
       '/wallet/fund/verify/${Uri.encodeComponent(reference)}',
     );
+    return FundingStatus.fromJson(_bodyOf(response));
+  }
+
+  Map<String, dynamic> _bodyOf(Response<Map<String, dynamic>> response) {
     final data = response.data;
-    if (data == null) return null;
-    return FundingStatus.fronJson(data);
+    if (data == null) throw const FormatException('Empty response body');
+    return data;
   }
 }
