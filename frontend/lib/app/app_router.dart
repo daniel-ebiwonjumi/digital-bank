@@ -83,3 +83,31 @@ class AppRoutes {
   static const String login = '/';
   static const String register = 'register';
 }
+
+
+// Provide the repository (switch with --dart-define=USE_MOCK_PAYMENTS=true)
+RepositoryProvider<FundAccountRepository>(
+  create: (_) => const bool.fromEnvironment('USE_MOCK_PAYMENTS')
+      ? MockFundAccountRepository()
+      : FundAccountRepositoryImpl(FundAccountService(dio)),
+  child: ...,
+)
+
+// Routes
+GoRoute(
+  path: '/fund-account',
+  builder: (_, __) => const FundAccountPage(),
+  routes: [
+    GoRoute(
+      path: 'checkout',
+      builder: (_, state) =>
+          PaymentWebViewPage(checkoutUrl: state.extra! as String),
+    ),
+  ],
+),
+
+// Home screen: refresh the balance when Fund account pops with true
+final refresh = await context.push<bool>('/fund-account');
+if (refresh == true && context.mounted) {
+  context.read<HomeBloc>().add(const HomeRefreshRequested()); // use your event name
+}
