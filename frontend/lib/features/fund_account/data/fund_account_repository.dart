@@ -1,10 +1,14 @@
-import 'package:digital_bank/features/fund_account/models/fund_account.dart';
+import '../models/funding_models.dart';
 
+/// Implemented by [FundAccountRepositoryImpl] (real API) and
+/// [MockFundAccountRepository] (no network). Both throw `Failure` on errors.
 abstract interface class FundAccountRepository {
-Future<FundingSession?> initializeFunding({
-  required int amount,
-  required FundingMethod method
-});
+  /// Starts a funding session for [amountInNaira].
+  Future<FundingSession> initializeFunding({
+    required double amountInNaira,
+    required FundingMethod method,
+  });
 
-Future<FundingStatus?> verify({required String reference});
+  /// Asks the backend for the current status of a funding session.
+  Future<FundingStatus> verifyFunding(String reference);
 }
