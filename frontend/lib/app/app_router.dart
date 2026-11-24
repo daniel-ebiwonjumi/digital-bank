@@ -111,3 +111,54 @@ final refresh = await context.push<bool>('/fund-account');
 if (refresh == true && context.mounted) {
   context.read<HomeBloc>().add(const HomeRefreshRequested()); // use your event name
 }
+
+// Provide the repository once: it caches the bank list.
+// Switch with --dart-define=USE_MOCK_BANK_TRANSFERS=true
+RepositoryProvider<BankTransferRepository>(
+  create: (_) => const bool.fromEnvironment('USE_MOCK_BANK_TRANSFERS')
+      ? MockBankTransferRepository()
+      : BankTransferRepositoryImpl(BankTransferService(dio)),
+  child: ...,
+)
+
+// Route
+GoRoute(
+  path: '/bank-transfer',
+  builder: (_, state) {
+    final extra = state.extra;
+    return BankTransferPage(
+      availableBalanceInNaira: extra is double ? extra : null,
+    );
+  },
+),
+
+// Home screen: refresh the balance when the page pops with true
+final refresh = await context.push<bool>('/bank-transfer', extra: balanceInNaira);
+if (refresh == true && context.mounted) {
+  context.read<HomeBloc>().add(const HomeRefreshRequested()); // use your event name
+}
+
+// Provide the repository (switch with --dart-define=USE_MOCK_TRANSFERS=true)
+RepositoryProvider<TransferRepository>(
+  create: (_) => const bool.fromEnvironment('USE_MOCK_TRANSFERS')
+      ? MockTransferRepository()
+      : TransferRepositoryImpl(TransferService(dio)),
+  child: ...,
+)
+
+// Route
+GoRoute(
+  path: '/transfer',
+  builder: (_, state) {
+    final extra = state.extra;
+    return TransferPage(
+      availableBalanceInNaira: extra is double ? extra : null,
+    );
+  },
+),
+
+// Home screen: refresh the balance when Transfer pops with true
+final refresh = await context.push<bool>('/transfer', extra: balanceInNaira);
+if (refresh == true && context.mounted) {
+  context.read<HomeBloc>().add(const HomeRefreshRequested()); // use your event name
+}
